@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>海量小文件服务器端缓存架构 | Hexo</title>
+  <title>海量小文件服务器端缓存架构 | 搬砖工的日常</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-    <meta name="author" content="John Doe">
+    <meta name="author" content="wm">
   
   
     <meta name="description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
@@ -15,18 +15,18 @@
   <meta name="description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="海量小文件服务器端缓存架构">
-<meta property="og:url" content="http://yoursite.com/2015/07/31/海量小文件服务器端架构/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://eclipsesv.com/2015/07/31/海量小文件服务器端架构/index.html">
+<meta property="og:site_name" content="搬砖工的日常">
 <meta property="og:description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
 <meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgserver_structure.jpg">
 <meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg">
 <meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgab.png">
-<meta property="og:updated_time" content="2015-07-31T09:13:58.042Z">
+<meta property="og:updated_time" content="2015-07-31T10:54:58.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="海量小文件服务器端缓存架构">
 <meta name="twitter:description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="搬砖工的日常" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -40,7 +40,7 @@
   <div class="wrapper">
     <header id="header">
   <div class="title">
-    <h1><a href="/">Hexo</a></h1>
+    <h1><a href="/">搬砖工的日常</a></h1>
     <p><a href="/"></a></p>
   </div>
   <nav class="nav">
@@ -94,7 +94,7 @@
 
       
   <div class="tags">
-    <a class="tags-link" href="/tags/Mongodb-Redis-Ngxin/">Mongodb Redis Ngxin</a>
+    <a class="tags-link" href="/tags/Mongodb/">Mongodb</a>, <a class="tags-link" href="/tags/Nginx/">Nginx</a>, <a class="tags-link" href="/tags/Redis/">Redis</a>
   </div>
 
     
@@ -112,13 +112,19 @@
   </div>
   <footer id="footer"><div class="copyright">
   
-  &copy; 2015 <a href="/">John Doe</a>
+  &copy; 2015 <a href="/">wm</a>
   
 </div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
 <div class="theme-copyright">
   Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
    | 
   Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+   |
+  	<span id="busuanzi_container_site_pv">
+    	本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
 </div>
 <div class="clearfix"></div></footer>
   <script src="//ajax.useso.com/ajax/libs/jquery/1.8/jquery.min.js"></script>

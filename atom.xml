@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   
-  <title><![CDATA[Hexo]]></title>
+  <title><![CDATA[搬砖工的日常]]></title>
   
   <link href="/atom.xml" rel="self"/>
-  <link href="http://yoursite.com//"/>
+  <link href="http://eclipsesv.com//"/>
   <updated>2015-07-31T07:18:48.490Z</updated>
-  <id>http://yoursite.com//</id>
+  <id>http://eclipsesv.com//</id>
   
   <author>
-    <name><![CDATA[John Doe]]></name>
+    <name><![CDATA[wm]]></name>
     
   </author>
   
@@ -17,8 +17,8 @@
   
   <entry>
     <title><![CDATA[送给自己]]></title>
-    <link href="http://yoursite.com/2015/07/31/%E9%80%81%E7%BB%99%E8%87%AA%E5%B7%B1/"/>
-    <id>http://yoursite.com/2015/07/31/送给自己/</id>
+    <link href="http://eclipsesv.com/2015/07/31/%E9%80%81%E7%BB%99%E8%87%AA%E5%B7%B1/"/>
+    <id>http://eclipsesv.com/2015/07/31/送给自己/</id>
     <published>2015-07-31T07:17:09.000Z</published>
     <updated>2015-07-31T07:18:48.490Z</updated>
     <content type="html"><![CDATA[<p><strong>总有一天，你将破茧而出</strong><br><strong>成长的比人们期待的还要美丽</strong></p>
@@ -32,16 +32,16 @@
 <p><strong>面]]>
     </summary>
     
-      <category term="心情文字" scheme="http://yoursite.com/categories/%E5%BF%83%E6%83%85%E6%96%87%E5%AD%97/"/>
+      <category term="心情文字" scheme="http://eclipsesv.com/categories/%E5%BF%83%E6%83%85%E6%96%87%E5%AD%97/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[海量小文件服务器端缓存架构]]></title>
-    <link href="http://yoursite.com/2015/07/31/%E6%B5%B7%E9%87%8F%E5%B0%8F%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9E%B6%E6%9E%84/"/>
-    <id>http://yoursite.com/2015/07/31/海量小文件服务器端架构/</id>
+    <link href="http://eclipsesv.com/2015/07/31/%E6%B5%B7%E9%87%8F%E5%B0%8F%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9E%B6%E6%9E%84/"/>
+    <id>http://eclipsesv.com/2015/07/31/海量小文件服务器端架构/</id>
     <published>2015-07-31T07:17:09.000Z</published>
-    <updated>2015-07-31T09:13:58.042Z</updated>
+    <updated>2015-07-31T10:54:58.439Z</updated>
     <content type="html"><![CDATA[<h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/" target="_blank" rel="external">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。<a id="more"></a>总体的数据请求和返回就是这样，但是，服务器在得到请求之后，每次都从磁盘数据库中检索数据，而这一检索过程通常不止一遍（因为客户端可能重复观察同一片地区），在多用户使用的情况下，这种无用的时间消耗更是令人难以忍受。同时，多次检索同一条数据，也会增加服务器的I/O负载，浪费服务器资源。</p>
 <h1 id="架构设计">架构设计</h1><h2 id="服务器端缓存架构">服务器端缓存架构</h2><p>为了避免多次对同一条数据的磁盘数据库检索，在服务器端构建一套缓存机制，可以有效避免这样的情况。<br>废话不多说，直接上图：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgserver_structure.jpg" alt="服务器端缓存架构" title="服务器缓存架构图"><br>在服务器端，增加内存数据<a href="http://redis.io/" title="Redis" target="_blank" rel="external">Redis</a>，作为缓存。借助Redis的优秀性能，在数据缓存到Redis之后，可以有效减少每条数据请求的时间消耗。</p>
 <h2 id="服务器缓存时序图">服务器缓存时序图</h2><p>在服务器端，数据请求的流程可以由以下的时序图来说明：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg" alt="服务器端缓存时序图" title="服务器端缓存时序图"></p>
@@ -53,9 +53,13 @@
     
     </summary>
     
-      <category term="Mongodb Redis Ngxin" scheme="http://yoursite.com/tags/Mongodb-Redis-Ngxin/"/>
+      <category term="Mongodb" scheme="http://eclipsesv.com/tags/Mongodb/"/>
     
-      <category term="服务器" scheme="http://yoursite.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+      <category term="Nginx" scheme="http://eclipsesv.com/tags/Nginx/"/>
+    
+      <category term="Redis" scheme="http://eclipsesv.com/tags/Redis/"/>
+    
+      <category term="服务器" scheme="http://eclipsesv.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
   </entry>
   
