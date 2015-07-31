@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com//"/>
-  <updated>2015-07-30T15:13:27.427Z</updated>
+  <updated>2015-07-31T07:18:48.490Z</updated>
   <id>http://yoursite.com//</id>
   
   <author>
@@ -16,96 +16,46 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[makedown]]></title>
-    <link href="http://yoursite.com/2015/07/30/makedown/"/>
-    <id>http://yoursite.com/2015/07/30/makedown/</id>
-    <published>2015-07-30T14:19:55.000Z</published>
-    <updated>2015-07-30T15:13:27.427Z</updated>
-    <content type="html"><![CDATA[<p><strong>做一个测试</strong><br><strong>孤独患者</strong><br><strong>粗体字</strong><br><em>斜体字</em></p>
-<hr>
-<blockquote>
-<p>引用</p>
-<blockquote>
-<p>二层引用</p>
-</blockquote>
-</blockquote>
-<hr>
-<h1 id="大标题">大标题</h1><h2 id="小标题">小标题</h2><p>#一级标题</p>
-<p>##二级标题</p>
-<p>###三级标题</p>
-<hr>
-<ul>
-<li>无序标题</li>
-<li>无序标题</li>
-</ul>
-<ul>
-<li>无序标题</li>
-<li>无序标题</li>
-</ul>
-<hr>
-<ol>
-<li>第一</li>
-<li>第二</li>
-<li>第三</li>
-</ol>
-<hr>
-<ul>
-<li>一层嵌套<ul>
-<li>二层嵌套<ul>
-<li>三层嵌套</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>一层嵌套</li>
-</ul>
-<hr>
-<p><a href="http://eclipsesv.com" target="_blank" rel="external">http://eclipsesv.com</a><br><a href="http://wangmengcn.github.io" target="_blank" rel="external">http://wangmengcn.github.io</a></p>
-<hr>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>做一个测试</strong><br><strong>孤独患者</strong><br><strong>粗体字</strong><br><em>斜体字</em></p>
-<hr>
-<blockquote>
-<p>引用</p>
-<blockquote>
-<p>二]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[送给自己]]></title>
-    <link href="http://yoursite.com/2015/07/30/%E9%80%81%E7%BB%99%E8%87%AA%E5%B7%B1/"/>
-    <id>http://yoursite.com/2015/07/30/送给自己/</id>
-    <published>2015-07-30T14:02:02.000Z</published>
-    <updated>2015-07-30T14:02:02.077Z</updated>
-    <content type="html"></content>
+    <link href="http://yoursite.com/2015/07/31/%E9%80%81%E7%BB%99%E8%87%AA%E5%B7%B1/"/>
+    <id>http://yoursite.com/2015/07/31/送给自己/</id>
+    <published>2015-07-31T07:17:09.000Z</published>
+    <updated>2015-07-31T07:18:48.490Z</updated>
+    <content type="html"><![CDATA[<p><strong>总有一天，你将破茧而出</strong><br><strong>成长的比人们期待的还要美丽</strong></p>
+<p><strong>但这个过程会很痛</strong><br><strong>会很辛苦</strong></p>
+<p><strong>面对着汹涌而来的现实</strong><br><strong>觉得自己渺小无力</strong></p>
+<p><strong>但这 也是生命的一部分</strong><br><strong>做好现在你能做的 然后 一切都会好的</strong><br><strong>我们都将孤独地长大 不要害怕</strong></p>
+]]></content>
     <summary type="html">
-    
+    <![CDATA[<p><strong>总有一天，你将破茧而出</strong><br><strong>成长的比人们期待的还要美丽</strong></p>
+<p><strong>但这个过程会很痛</strong><br><strong>会很辛苦</strong></p>
+<p><strong>面]]>
     </summary>
+    
+      <category term="心情文字" scheme="http://yoursite.com/categories/%E5%BF%83%E6%83%85%E6%96%87%E5%AD%97/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Hello World]]></title>
-    <link href="http://yoursite.com/2015/07/30/hello-world/"/>
-    <id>http://yoursite.com/2015/07/30/hello-world/</id>
-    <published>2015-07-30T07:45:23.227Z</published>
-    <updated>2015-07-30T07:45:23.227Z</updated>
-    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+    <title><![CDATA[海量小文件服务器端缓存架构]]></title>
+    <link href="http://yoursite.com/2015/07/31/%E6%B5%B7%E9%87%8F%E5%B0%8F%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9E%B6%E6%9E%84/"/>
+    <id>http://yoursite.com/2015/07/31/海量小文件服务器端架构/</id>
+    <published>2015-07-31T07:17:09.000Z</published>
+    <updated>2015-07-31T09:13:58.042Z</updated>
+    <content type="html"><![CDATA[<h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/" target="_blank" rel="external">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。<a id="more"></a>总体的数据请求和返回就是这样，但是，服务器在得到请求之后，每次都从磁盘数据库中检索数据，而这一检索过程通常不止一遍（因为客户端可能重复观察同一片地区），在多用户使用的情况下，这种无用的时间消耗更是令人难以忍受。同时，多次检索同一条数据，也会增加服务器的I/O负载，浪费服务器资源。</p>
+<h1 id="架构设计">架构设计</h1><h2 id="服务器端缓存架构">服务器端缓存架构</h2><p>为了避免多次对同一条数据的磁盘数据库检索，在服务器端构建一套缓存机制，可以有效避免这样的情况。<br>废话不多说，直接上图：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgserver_structure.jpg" alt="服务器端缓存架构" title="服务器缓存架构图"><br>在服务器端，增加内存数据<a href="http://redis.io/" title="Redis" target="_blank" rel="external">Redis</a>，作为缓存。借助Redis的优秀性能，在数据缓存到Redis之后，可以有效减少每条数据请求的时间消耗。</p>
+<h2 id="服务器缓存时序图">服务器缓存时序图</h2><p>在服务器端，数据请求的流程可以由以下的时序图来说明：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg" alt="服务器端缓存时序图" title="服务器端缓存时序图"></p>
+<h1 id="缓存效果">缓存效果</h1><p>在增加缓存机制前后，数据调度效率的对比如下所示：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgab.png" alt="增加缓存前后每条数据平均请求时间消耗" title="数据平均时间消耗"><br>使用三维球对同一区域进行绕点飞行，可以看到，在飞行的第一圈，数据缓存到Redis中有较多的时间消耗，第一圈飞行完毕之后，使用缓存的数据请求时间消耗明显小于未使用缓存的数据请求。</p>
+<h1 id="未完待续">未完待续</h1><p>在接下来的几篇文章中，我会持续详细讲解这套缓存机制在服务器端包括<strong>Web服务器</strong>、<strong>消息中间件</strong>、<strong>MongoDB</strong>和<strong>Redis集群</strong>的内容。</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io]]>
+    <![CDATA[<h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。]]>
+    
     </summary>
+    
+      <category term="Mongodb Redis Ngxin" scheme="http://yoursite.com/tags/Mongodb-Redis-Ngxin/"/>
+    
+      <category term="服务器" scheme="http://yoursite.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
   </entry>
   

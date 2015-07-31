@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>海量小文件服务器端缓存架构 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="John Doe">
+  
+  
+    <meta name="description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
+  
+  <meta name="description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="海量小文件服务器端缓存架构">
+<meta property="og:url" content="http://yoursite.com/2015/07/31/海量小文件服务器端架构/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
+<meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgserver_structure.jpg">
+<meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg">
+<meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgab.png">
+<meta property="og:updated_time" content="2015-07-31T09:13:58.042Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="海量小文件服务器端缓存架构">
+<meta name="twitter:description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Hexo</a></h1>
+    <p><a href="/"></a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/07/31/海量小文件服务器端架构/">
+  <time datetime="2015-07-31T07:17:09.000Z">
+    2015-07-31
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">海量小文件服务器端缓存架构</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/" target="_blank" rel="external">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。<a id="more"></a>总体的数据请求和返回就是这样，但是，服务器在得到请求之后，每次都从磁盘数据库中检索数据，而这一检索过程通常不止一遍（因为客户端可能重复观察同一片地区），在多用户使用的情况下，这种无用的时间消耗更是令人难以忍受。同时，多次检索同一条数据，也会增加服务器的I/O负载，浪费服务器资源。</p>
+<h1 id="架构设计">架构设计</h1><h2 id="服务器端缓存架构">服务器端缓存架构</h2><p>为了避免多次对同一条数据的磁盘数据库检索，在服务器端构建一套缓存机制，可以有效避免这样的情况。<br>废话不多说，直接上图：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgserver_structure.jpg" alt="服务器端缓存架构" title="服务器缓存架构图"><br>在服务器端，增加内存数据<a href="http://redis.io/" title="Redis" target="_blank" rel="external">Redis</a>，作为缓存。借助Redis的优秀性能，在数据缓存到Redis之后，可以有效减少每条数据请求的时间消耗。</p>
+<h2 id="服务器缓存时序图">服务器缓存时序图</h2><p>在服务器端，数据请求的流程可以由以下的时序图来说明：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg" alt="服务器端缓存时序图" title="服务器端缓存时序图"></p>
+<h1 id="缓存效果">缓存效果</h1><p>在增加缓存机制前后，数据调度效率的对比如下所示：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgab.png" alt="增加缓存前后每条数据平均请求时间消耗" title="数据平均时间消耗"><br>使用三维球对同一区域进行绕点飞行，可以看到，在飞行的第一圈，数据缓存到Redis中有较多的时间消耗，第一圈飞行完毕之后，使用缓存的数据请求时间消耗明显小于未使用缓存的数据请求。</p>
+<h1 id="未完待续">未完待续</h1><p>在接下来的几篇文章中，我会持续详细讲解这套缓存机制在服务器端包括<strong>Web服务器</strong>、<strong>消息中间件</strong>、<strong>MongoDB</strong>和<strong>Redis集群</strong>的内容。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/服务器/">服务器</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Mongodb-Redis-Ngxin/">Mongodb Redis Ngxin</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="海量小文件服务器端缓存架构">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">John Doe</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'eclipsesv' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
