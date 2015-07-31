@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://eclipsesv.com//"/>
-  <updated>2015-07-31T07:18:48.490Z</updated>
+  <updated>2015-07-31T15:59:15.637Z</updated>
   <id>http://eclipsesv.com//</id>
   
   <author>
@@ -14,6 +14,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[服务器端缓存环境配置]]></title>
+    <link href="http://eclipsesv.com/2015/07/31/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
+    <id>http://eclipsesv.com/2015/07/31/服务器端缓存环境配置/</id>
+    <published>2015-07-31T15:39:02.000Z</published>
+    <updated>2015-07-31T15:59:15.637Z</updated>
+    <content type="html"><![CDATA[<h1 id="原材料"><strong>原材料</strong></h1><p>正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。</p>
+<ul>
+<li><a href="http://nginx.org/" title="作为Web服务器的存在" target="_blank" rel="external">Nginx</a>作为Web服务器的存在</li>
+<li><a href="https://www.mongodb.org/" title="磁盘数据库" target="_blank" rel="external">Mongodb</a>磁盘数据库</li>
+<li><a href="http://www.lua.org/" title="与Nginx结合，进行服务器端的逻辑控制" target="_blank" rel="external">Lua</a>与Nginx结合，进行服务器端的逻辑控制</li>
+<li><a href="http://redis.io/" title="高速缓存" target="_blank" rel="external">Redis</a>内存数据库，高速缓存</li>
+<li><a href="http://www.php.net/" title="返回数据库信息给客户端" target="_blank" rel="external">PHP</a>读取磁盘数据库信息，返回给客户端</li>
+</ul>
+<h1 id="调料包"><strong>调料包</strong></h1>]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="原材料"><strong>原材料</strong></h1><p>正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。</p>
+<ul>
+<li><a href="http://nginx.org/" title="作为Web服]]>
+    </summary>
+    
+      <category term="Lua" scheme="http://eclipsesv.com/tags/Lua/"/>
+    
+      <category term="Mongodb" scheme="http://eclipsesv.com/tags/Mongodb/"/>
+    
+      <category term="Nginx" scheme="http://eclipsesv.com/tags/Nginx/"/>
+    
+      <category term="PHP" scheme="http://eclipsesv.com/tags/PHP/"/>
+    
+      <category term="Redis" scheme="http://eclipsesv.com/tags/Redis/"/>
+    
+      <category term="服务器" scheme="http://eclipsesv.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[送给自己]]></title>

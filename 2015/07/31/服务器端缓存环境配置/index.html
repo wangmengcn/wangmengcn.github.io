@@ -4,21 +4,56 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>搬砖工的日常</title>
+  <title>服务器端缓存环境配置 | 搬砖工的日常</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
     <meta name="author" content="wm">
   
   
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="搬砖工的日常">
-<meta property="og:url" content="http://eclipsesv.com/index.html">
+    <meta name="description" content="原材料正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
+
+Nginx作为Web服务器的存在
+Mongodb磁盘数据库
+Lua与Nginx结合，进行服务器端的逻辑控制
+Redis内存数据库，高速缓存
+PHP读取磁盘数据库信息，返回给客户端
+
+调料包">
+  
+  <meta name="description" content="原材料正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
+
+Nginx作为Web服务器的存在
+Mongodb磁盘数据库
+Lua与Nginx结合，进行服务器端的逻辑控制
+Redis内存数据库，高速缓存
+PHP读取磁盘数据库信息，返回给客户端
+
+调料包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务器端缓存环境配置">
+<meta property="og:url" content="http://eclipsesv.com/2015/07/31/服务器端缓存环境配置/index.html">
 <meta property="og:site_name" content="搬砖工的日常">
-<meta property="og:description">
+<meta property="og:description" content="原材料正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
+
+Nginx作为Web服务器的存在
+Mongodb磁盘数据库
+Lua与Nginx结合，进行服务器端的逻辑控制
+Redis内存数据库，高速缓存
+PHP读取磁盘数据库信息，返回给客户端
+
+调料包">
+<meta property="og:updated_time" content="2015-07-31T15:59:15.637Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="搬砖工的日常">
-<meta name="twitter:description">
+<meta name="twitter:title" content="服务器端缓存环境配置">
+<meta name="twitter:description" content="原材料正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
+
+Nginx作为Web服务器的存在
+Mongodb磁盘数据库
+Lua与Nginx结合，进行服务器端的逻辑控制
+Redis内存数据库，高速缓存
+PHP读取磁盘数据库信息，返回给客户端
+
+调料包">
   
     <link rel="alternate" href="/atom.xml" title="搬砖工的日常" type="application/atom+xml">
   
@@ -52,13 +87,7 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-    <div class="content">
-
-
-
-
-  
-    <article class="post">
+    <div class="content"><article class="post">
   <header>
     
       <div class="icon"></div>
@@ -70,7 +99,7 @@
     
     
   
-    <h1 class="title"><a href="/2015/07/31/服务器端缓存环境配置/">服务器端缓存环境配置</a></h1>
+    <h1 class="title">服务器端缓存环境配置</h1>
   
 
   </header>
@@ -88,98 +117,29 @@
 <h1 id="调料包"><strong>调料包</strong></h1>
     
   </div>
-  <footer class="end-sep">
+  <footer>
     
       
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/07/31/送给自己/">
-  <time datetime="2015-07-31T07:17:09.000Z">
-    2015-07-31
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/07/31/送给自己/">送给自己</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p><strong>总有一天，你将破茧而出</strong><br><strong>成长的比人们期待的还要美丽</strong></p>
-<p><strong>但这个过程会很痛</strong><br><strong>会很辛苦</strong></p>
-<p><strong>面对着汹涌而来的现实</strong><br><strong>觉得自己渺小无力</strong></p>
-<p><strong>但这 也是生命的一部分</strong><br><strong>做好现在你能做的 然后 一切都会好的</strong><br><strong>我们都将孤独地长大 不要害怕</strong></p>
-
-    
+  <div class="categories">
+    <a class="categories-link" href="/categories/服务器/">服务器</a>
   </div>
-  <footer class="end-sep">
-    
+
       
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/07/31/海量小文件服务器端架构/">
-  <time datetime="2015-07-31T07:17:09.000Z">
-    2015-07-31
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/07/31/海量小文件服务器端架构/">海量小文件服务器端缓存架构</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。
-    
+  <div class="tags">
+    <a class="tags-link" href="/tags/Lua/">Lua</a>, <a class="tags-link" href="/tags/Mongodb/">Mongodb</a>, <a class="tags-link" href="/tags/Nginx/">Nginx</a>, <a class="tags-link" href="/tags/PHP/">PHP</a>, <a class="tags-link" href="/tags/Redis/">Redis</a>
   </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/07/31/海量小文件服务器端架构/#more" class="more-link">阅读全文</a>
-        </div>
-      
-      
+
     
     <div class="clearfix"></div>
   </footer>
 </article>
 
 
-  
-
-  <nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav>
-
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="服务器端缓存环境配置">
+  </div>
+</section>
 </div>
   </div>
   <footer id="footer"><div class="copyright">
