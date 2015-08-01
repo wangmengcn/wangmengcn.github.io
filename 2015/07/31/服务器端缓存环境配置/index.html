@@ -16,9 +16,7 @@ Nginx作为Web服务器的存在
 Mongodb磁盘数据库
 Lua与Nginx结合，进行服务器端的逻辑控制
 Redis内存数据库，高速缓存
-PHP读取磁盘数据库信息，返回给客户端
-
-调料包">
+PHP读取磁盘数据库信息，返回给客户端">
   
   <meta name="description" content="原材料正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
 
@@ -26,9 +24,7 @@ Nginx作为Web服务器的存在
 Mongodb磁盘数据库
 Lua与Nginx结合，进行服务器端的逻辑控制
 Redis内存数据库，高速缓存
-PHP读取磁盘数据库信息，返回给客户端
-
-调料包">
+PHP读取磁盘数据库信息，返回给客户端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="服务器端缓存环境配置">
 <meta property="og:url" content="http://eclipsesv.com/2015/07/31/服务器端缓存环境配置/index.html">
@@ -39,10 +35,8 @@ Nginx作为Web服务器的存在
 Mongodb磁盘数据库
 Lua与Nginx结合，进行服务器端的逻辑控制
 Redis内存数据库，高速缓存
-PHP读取磁盘数据库信息，返回给客户端
-
-调料包">
-<meta property="og:updated_time" content="2015-07-31T15:59:15.637Z">
+PHP读取磁盘数据库信息，返回给客户端">
+<meta property="og:updated_time" content="2015-08-01T03:35:42.592Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务器端缓存环境配置">
 <meta name="twitter:description" content="原材料正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
@@ -51,9 +45,7 @@ Nginx作为Web服务器的存在
 Mongodb磁盘数据库
 Lua与Nginx结合，进行服务器端的逻辑控制
 Redis内存数据库，高速缓存
-PHP读取磁盘数据库信息，返回给客户端
-
-调料包">
+PHP读取磁盘数据库信息，返回给客户端">
   
     <link rel="alternate" href="/atom.xml" title="搬砖工的日常" type="application/atom+xml">
   
@@ -114,7 +106,35 @@ PHP读取磁盘数据库信息，返回给客户端
 <li><a href="http://redis.io/" title="高速缓存" target="_blank" rel="external">Redis</a>内存数据库，高速缓存</li>
 <li><a href="http://www.php.net/" title="返回数据库信息给客户端" target="_blank" rel="external">PHP</a>读取磁盘数据库信息，返回给客户端</li>
 </ul>
-<h1 id="调料包"><strong>调料包</strong></h1>
+<a id="more"></a>
+<h1 id="调料包"><strong>调料包</strong></h1><p>有了原材料，当然需要将它们融合在一起，才能烹调出美味，下面这些内容则可以称之为调料包：</p>
+<ul>
+<li><strong>Nginx的Lua扩展</strong><br><a href="http://luajit.org" target="_blank" rel="external">LuaJit</a><br><a href="https://github.com/simpl/ngx_devel_kit" target="_blank" rel="external">ngx_devel_kit</a><br><a href="https://github.com/chaoslawful/lua-nginx-module" target="_blank" rel="external">lua-nginx-module</a></li>
+<li><strong>Nginx的Mongodb扩展</strong><br><a href="https://github.com/mdirolf/nginx-gridfs" target="_blank" rel="external">Nginx-gridfs</a></li>
+<li><strong>PHP的Mongodb扩展</strong><br><a href="https://github.com/mongodb/mongo-php-driver" target="_blank" rel="external">Mongo-php-driver</a></li>
+<li><a href="https://github.com/h4lflife/lua-resty-redis" target="_blank" rel="external"><strong>Lua的Redis扩展</strong></a></li>
+</ul>
+<h1 id="Mongodb的安装配置"><strong>Mongodb的安装配置</strong></h1><p>柿子先挑软的捏，整个流程中需要安装和配置的内容比较多，相比来说，Mongodb算是最简单的一个了。</p>
+<h2 id="下载">下载</h2><p>在写这篇博客的时候，最新的Mongodb版本是<a href="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz" target="_blank" rel="external">3.0.5</a>，下载的方法如下：</p>
+<pre><code>[wangmeg@localhost ~]$ cd /usr/local
+[wangmeg@localhost local]$ su
+Password: 
+[root@localhost local]<span class="preprocessor"># wget https:<span class="comment">//fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz</span></span>
+--<span class="number">2015</span>-<span class="number">08</span>-<span class="number">01</span> <span class="number">11</span>:<span class="number">06</span>:<span class="number">41</span>--  https:<span class="comment">//fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz</span>
+Resolving fastdl.mongodb.org (fastdl.mongodb.org)... <span class="number">54.230</span><span class="number">.156</span><span class="number">.11</span>, <span class="number">54.230</span><span class="number">.156</span><span class="number">.102</span>, <span class="number">54.230</span><span class="number">.156</span><span class="number">.123</span>, ...
+Connecting to fastdl.mongodb.org (fastdl.mongodb.org)|<span class="number">54.230</span><span class="number">.156</span><span class="number">.11</span>|:<span class="number">443.</span>.. connected.
+HTTP request sent, awaiting response... <span class="number">200</span> OK
+Length: <span class="number">50203367</span> (<span class="number">48</span>M) [application/x-gzip]
+Saving to: ‘mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span>.tgz’
+
+<span class="number">100</span>%[======================================&gt;] <span class="number">50</span>,<span class="number">203</span>,<span class="number">367</span>   <span class="number">582</span>KB/s   in <span class="number">4</span>m <span class="number">40</span>s 
+
+<span class="number">2015</span>-<span class="number">08</span>-<span class="number">01</span> <span class="number">11</span>:<span class="number">11</span>:<span class="number">31</span> (<span class="number">175</span> KB/s) - ‘mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span>.tgz’ saved [<span class="number">50203367</span>/<span class="number">50203367</span>]
+</code></pre><p>首先进入/usr/local目录，下载这个文件需要root权限，输入su之后，输入自己的root密码，使用wget命令，下载MongoDB到/usr/local目录下；</p>
+<h2 id="解压缩">解压缩</h2><pre><code>[root@localhost local]<span class="preprocessor"># tar zxvf mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span>.tgz </span>
+[root@localhost local]<span class="preprocessor"># mv ./mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span> /usr/local/Mongodb3<span class="number">.0</span></span>
+</code></pre><p>使用tar zxvf 解压缩*.tgz文件，mv 命令将解压缩后的文件夹重命名为Mongodb3.0；</p>
+<h2 id="运行起来">运行起来</h2>
     
   </div>
   <footer>

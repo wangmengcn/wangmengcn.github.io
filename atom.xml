@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://eclipsesv.com//"/>
-  <updated>2015-07-31T15:59:15.637Z</updated>
+  <updated>2015-08-01T03:35:42.592Z</updated>
   <id>http://eclipsesv.com//</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://eclipsesv.com/2015/07/31/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
     <id>http://eclipsesv.com/2015/07/31/服务器端缓存环境配置/</id>
     <published>2015-07-31T15:39:02.000Z</published>
-    <updated>2015-07-31T15:59:15.637Z</updated>
+    <updated>2015-08-01T03:35:42.592Z</updated>
     <content type="html"><![CDATA[<h1 id="原材料"><strong>原材料</strong></h1><p>正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。</p>
 <ul>
 <li><a href="http://nginx.org/" title="作为Web服务器的存在" target="_blank" rel="external">Nginx</a>作为Web服务器的存在</li>
@@ -29,11 +29,45 @@
 <li><a href="http://redis.io/" title="高速缓存" target="_blank" rel="external">Redis</a>内存数据库，高速缓存</li>
 <li><a href="http://www.php.net/" title="返回数据库信息给客户端" target="_blank" rel="external">PHP</a>读取磁盘数据库信息，返回给客户端</li>
 </ul>
-<h1 id="调料包"><strong>调料包</strong></h1>]]></content>
+<a id="more"></a>
+<h1 id="调料包"><strong>调料包</strong></h1><p>有了原材料，当然需要将它们融合在一起，才能烹调出美味，下面这些内容则可以称之为调料包：</p>
+<ul>
+<li><strong>Nginx的Lua扩展</strong><br><a href="http://luajit.org" target="_blank" rel="external">LuaJit</a><br><a href="https://github.com/simpl/ngx_devel_kit" target="_blank" rel="external">ngx_devel_kit</a><br><a href="https://github.com/chaoslawful/lua-nginx-module" target="_blank" rel="external">lua-nginx-module</a></li>
+<li><strong>Nginx的Mongodb扩展</strong><br><a href="https://github.com/mdirolf/nginx-gridfs" target="_blank" rel="external">Nginx-gridfs</a></li>
+<li><strong>PHP的Mongodb扩展</strong><br><a href="https://github.com/mongodb/mongo-php-driver" target="_blank" rel="external">Mongo-php-driver</a></li>
+<li><a href="https://github.com/h4lflife/lua-resty-redis" target="_blank" rel="external"><strong>Lua的Redis扩展</strong></a></li>
+</ul>
+<h1 id="Mongodb的安装配置"><strong>Mongodb的安装配置</strong></h1><p>柿子先挑软的捏，整个流程中需要安装和配置的内容比较多，相比来说，Mongodb算是最简单的一个了。</p>
+<h2 id="下载">下载</h2><p>在写这篇博客的时候，最新的Mongodb版本是<a href="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz" target="_blank" rel="external">3.0.5</a>，下载的方法如下：</p>
+<pre><code>[wangmeg@localhost ~]$ cd /usr/local
+[wangmeg@localhost local]$ su
+Password: 
+[root@localhost local]<span class="preprocessor"># wget https:<span class="comment">//fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz</span></span>
+--<span class="number">2015</span>-<span class="number">08</span>-<span class="number">01</span> <span class="number">11</span>:<span class="number">06</span>:<span class="number">41</span>--  https:<span class="comment">//fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz</span>
+Resolving fastdl.mongodb.org (fastdl.mongodb.org)... <span class="number">54.230</span><span class="number">.156</span><span class="number">.11</span>, <span class="number">54.230</span><span class="number">.156</span><span class="number">.102</span>, <span class="number">54.230</span><span class="number">.156</span><span class="number">.123</span>, ...
+Connecting to fastdl.mongodb.org (fastdl.mongodb.org)|<span class="number">54.230</span><span class="number">.156</span><span class="number">.11</span>|:<span class="number">443.</span>.. connected.
+HTTP request sent, awaiting response... <span class="number">200</span> OK
+Length: <span class="number">50203367</span> (<span class="number">48</span>M) [application/x-gzip]
+Saving to: ‘mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span>.tgz’
+
+<span class="number">100</span>%[======================================&gt;] <span class="number">50</span>,<span class="number">203</span>,<span class="number">367</span>   <span class="number">582</span>KB/s   in <span class="number">4</span>m <span class="number">40</span>s 
+
+<span class="number">2015</span>-<span class="number">08</span>-<span class="number">01</span> <span class="number">11</span>:<span class="number">11</span>:<span class="number">31</span> (<span class="number">175</span> KB/s) - ‘mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span>.tgz’ saved [<span class="number">50203367</span>/<span class="number">50203367</span>]
+</code></pre><p>首先进入/usr/local目录，下载这个文件需要root权限，输入su之后，输入自己的root密码，使用wget命令，下载MongoDB到/usr/local目录下；</p>
+<h2 id="解压缩">解压缩</h2><pre><code>[root@localhost local]<span class="preprocessor"># tar zxvf mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span>.tgz </span>
+[root@localhost local]<span class="preprocessor"># mv ./mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span> /usr/local/Mongodb3<span class="number">.0</span></span>
+</code></pre><p>使用tar zxvf 解压缩*.tgz文件，mv 命令将解压缩后的文件夹重命名为Mongodb3.0；</p>
+<h2 id="运行起来">运行起来</h2>]]></content>
     <summary type="html">
     <![CDATA[<h1 id="原材料"><strong>原材料</strong></h1><p>正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。</p>
 <ul>
-<li><a href="http://nginx.org/" title="作为Web服]]>
+<li><a href="http://nginx.org/" title="作为Web服务器的存在">Nginx</a>作为Web服务器的存在</li>
+<li><a href="https://www.mongodb.org/" title="磁盘数据库">Mongodb</a>磁盘数据库</li>
+<li><a href="http://www.lua.org/" title="与Nginx结合，进行服务器端的逻辑控制">Lua</a>与Nginx结合，进行服务器端的逻辑控制</li>
+<li><a href="http://redis.io/" title="高速缓存">Redis</a>内存数据库，高速缓存</li>
+<li><a href="http://www.php.net/" title="返回数据库信息给客户端">PHP</a>读取磁盘数据库信息，返回给客户端</li>
+</ul>]]>
+    
     </summary>
     
       <category term="Lua" scheme="http://eclipsesv.com/tags/Lua/"/>
@@ -76,10 +110,10 @@
     <link href="http://eclipsesv.com/2015/07/31/%E6%B5%B7%E9%87%8F%E5%B0%8F%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9E%B6%E6%9E%84/"/>
     <id>http://eclipsesv.com/2015/07/31/海量小文件服务器端架构/</id>
     <published>2015-07-31T07:17:09.000Z</published>
-    <updated>2015-07-31T10:54:58.439Z</updated>
+    <updated>2015-08-01T02:25:39.635Z</updated>
     <content type="html"><![CDATA[<h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/" target="_blank" rel="external">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。<a id="more"></a>总体的数据请求和返回就是这样，但是，服务器在得到请求之后，每次都从磁盘数据库中检索数据，而这一检索过程通常不止一遍（因为客户端可能重复观察同一片地区），在多用户使用的情况下，这种无用的时间消耗更是令人难以忍受。同时，多次检索同一条数据，也会增加服务器的I/O负载，浪费服务器资源。</p>
 <h1 id="架构设计">架构设计</h1><h2 id="服务器端缓存架构">服务器端缓存架构</h2><p>为了避免多次对同一条数据的磁盘数据库检索，在服务器端构建一套缓存机制，可以有效避免这样的情况。<br>废话不多说，直接上图：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgserver_structure.jpg" alt="服务器端缓存架构" title="服务器缓存架构图"><br>在服务器端，增加内存数据<a href="http://redis.io/" title="Redis" target="_blank" rel="external">Redis</a>，作为缓存。借助Redis的优秀性能，在数据缓存到Redis之后，可以有效减少每条数据请求的时间消耗。</p>
-<h2 id="服务器缓存时序图">服务器缓存时序图</h2><p>在服务器端，数据请求的流程可以由以下的时序图来说明：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg" alt="服务器端缓存时序图" title="服务器端缓存时序图"></p>
+<h2 id="服务器缓存时序图">服务器缓存时序图</h2><p>在服务器端，数据请求的流程可以由以下的时序图来说明：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg" alt="服务器端时序图" title="服务器端缓存时序图"></p>
 <h1 id="缓存效果">缓存效果</h1><p>在增加缓存机制前后，数据调度效率的对比如下所示：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgab.png" alt="增加缓存前后每条数据平均请求时间消耗" title="数据平均时间消耗"><br>使用三维球对同一区域进行绕点飞行，可以看到，在飞行的第一圈，数据缓存到Redis中有较多的时间消耗，第一圈飞行完毕之后，使用缓存的数据请求时间消耗明显小于未使用缓存的数据请求。</p>
 <h1 id="未完待续">未完待续</h1><p>在接下来的几篇文章中，我会持续详细讲解这套缓存机制在服务器端包括<strong>Web服务器</strong>、<strong>消息中间件</strong>、<strong>MongoDB</strong>和<strong>Redis集群</strong>的内容。</p>
 ]]></content>
