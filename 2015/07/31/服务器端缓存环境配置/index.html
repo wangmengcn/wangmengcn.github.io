@@ -36,7 +36,7 @@ Mongodb磁盘数据库
 Lua与Nginx结合，进行服务器端的逻辑控制
 Redis内存数据库，高速缓存
 PHP读取磁盘数据库信息，返回给客户端">
-<meta property="og:updated_time" content="2015-08-01T03:35:42.592Z">
+<meta property="og:updated_time" content="2015-08-01T06:52:51.834Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务器端缓存环境配置">
 <meta name="twitter:description" content="原材料正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
@@ -62,7 +62,7 @@ PHP读取磁盘数据库信息，返回给客户端">
     <header id="header">
   <div class="title">
     <h1><a href="/">搬砖工的日常</a></h1>
-    <p><a href="/"></a></p>
+    <p><a href="/">搬砖路上有你有我</a></p>
   </div>
   <nav class="nav">
     <ul>
@@ -130,11 +130,135 @@ Saving to: ‘mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span c
 <span class="number">100</span>%[======================================&gt;] <span class="number">50</span>,<span class="number">203</span>,<span class="number">367</span>   <span class="number">582</span>KB/s   in <span class="number">4</span>m <span class="number">40</span>s 
 
 <span class="number">2015</span>-<span class="number">08</span>-<span class="number">01</span> <span class="number">11</span>:<span class="number">11</span>:<span class="number">31</span> (<span class="number">175</span> KB/s) - ‘mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span>.tgz’ saved [<span class="number">50203367</span>/<span class="number">50203367</span>]
-</code></pre><p>首先进入/usr/local目录，下载这个文件需要root权限，输入su之后，输入自己的root密码，使用wget命令，下载MongoDB到/usr/local目录下；</p>
+</code></pre><p>首先进入/usr/local目录，下载这个文件需要root权限，输入su之后，输入自己的root密码，使用wget命令，下载MongoDB到/usr/local目录下；<br>有的时候官网上资源不容易下载，提供下载地址<a href="http://yunpan.cn/cdARXPYP7FRPT" target="_blank" rel="external">MongoDB3.0.5点击下载，访问密码0cdf</a>。</p>
 <h2 id="解压缩">解压缩</h2><pre><code>[root@localhost local]<span class="preprocessor"># tar zxvf mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span>.tgz </span>
 [root@localhost local]<span class="preprocessor"># mv ./mongodb-linux-x86_64-rhel70-<span class="number">3.0</span><span class="number">.5</span> /usr/local/Mongodb3<span class="number">.0</span></span>
 </code></pre><p>使用tar zxvf 解压缩*.tgz文件，mv 命令将解压缩后的文件夹重命名为Mongodb3.0；</p>
-<h2 id="运行起来">运行起来</h2>
+<h2 id="运行起来">运行起来</h2><p>在运行之前，需要建立两个文件夹：</p>
+<pre><code>[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># cd Mongodb3.0/</span>
+[root<span class="constant">@localhost</span> Mongodb3<span class="number">.0</span>]<span class="preprocessor"># mkdir ./db</span>
+[root<span class="constant">@localhost</span> Mongodb3<span class="number">.0</span>]<span class="preprocessor"># mkdir ./log</span>
+</code></pre><p>先进入/usr/local/Mongodb3.0文件夹：cd Mongodb3.0/ ，在当前文件夹中建立db和log文件夹。</p>
+<pre><code>[root<span class="property">@localhost</span> Mongodb3.<span class="number">0</span>]<span class="comment"># cd ./bin/</span>
+[root<span class="property">@localhost</span> bin]<span class="comment"># ls</span>
+bsondump  mongodump    mongoimport  mongorestore  mongotop
+mongo     mongoexport  mongooplog   mongos
+mongod    mongofiles   mongoperf    mongostat
+[root<span class="property">@localhost</span> bin]<span class="comment"># ./mongod --dbpath=../db --port=27017 --logpath=../log/mongodb.log --fork</span>
+about <span class="keyword">to</span> fork child process, waiting <span class="keyword">until</span> server <span class="keyword">is</span> ready <span class="keyword">for</span> connections.
+forked <span class="attribute">process</span>: <span class="number">12246</span>
+child process started successfully, parent exiting
+</code></pre><p>进入/usr/local/Mongodb3.0/bin/文件夹：cd ./bin/；<br>bin文件夹下mongod为mongodb启动文件，运行命令 ./mongod –dbpath=../db –port=27017 –logpath=../log/mongodb.log –fork 启动Mongodb。<br>–dbpath 代表Mongodb数据存储的位置； –port 表示Mongodb所占用的端口号； –logpath 表示日志文件的路径；–fork 表示Mongodb以守护进程的形式启动。<br>现在可以看到<br>about to fork child process, waiting until server is ready for connections.<br>forked process: 12246<br>child process started successfully, parent exiting<br>表示Mongodb已经正常启动！</p>
+<h2 id="停止Mongodb">停止Mongodb</h2><p>按照上边的步骤，可以已守护进程的方式启动Mongodb，在需要停止Mongodb的时候，可以使用以下操作：</p>
+<pre><code>[root@localhost bin]<span class="preprocessor"># ps -e | grep mongod</span>
+ <span class="number">12246</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">04</span> mongod
+</code></pre><p>键入命令 ps -e | grep mongod，可以看到正在运行的Mongodb的pid（进程号）;</p>
+<pre><code>[root<span class="constant">@localhost</span> bin]<span class="preprocessor"># kill 12246</span>
+[root<span class="constant">@localhost</span> bin]<span class="preprocessor"># ps -e | grep mongod</span>
+[root<span class="constant">@localhost</span> bin]<span class="preprocessor"># </span>
+</code></pre><p>得到进程号之后，使用kill命令来停止Mongodb，再次输入ps -e | grep mongod 终端就不会再有显示，表示进程已被杀死。</p>
+<h1 id="Redis_集群的搭建">Redis 集群的搭建</h1><p>这里需要说明以下，下载的时候选择支持集群模式的Redis3.0之后的版本。</p>
+<h2 id="下载-1">下载</h2><p>跟Mongodb一样，第一步肯定是先把文件下载下来：</p>
+<pre><code>[root@localhost bin]<span class="preprocessor"># cd /usr/local</span>
+[root@localhost local]<span class="preprocessor"># wget http:<span class="comment">//download.redis.io/releases/redis-3.0.3.tar.gz</span></span>
+--<span class="number">2015</span>-<span class="number">08</span>-<span class="number">01</span> <span class="number">13</span>:<span class="number">02</span>:<span class="number">27</span>--  http:<span class="comment">//download.redis.io/releases/redis-3.0.3.tar.gz</span>
+Resolving download.redis.io (download.redis.io)... <span class="number">109.74</span><span class="number">.203</span><span class="number">.151</span>
+Connecting to download.redis.io (download.redis.io)|<span class="number">109.74</span><span class="number">.203</span><span class="number">.151</span>|:<span class="number">80.</span>.. connected.
+HTTP request sent, awaiting response... <span class="number">200</span> OK
+Length: <span class="number">1360959</span> (<span class="number">1.3</span>M) [application/x-gzip]
+Saving to: ‘redis-<span class="number">3.0</span><span class="number">.3</span>.tar.gz<span class="number">.1</span>’
+
+<span class="number">100</span>%[======================================&gt;] <span class="number">1</span>,<span class="number">360</span>,<span class="number">959</span>    <span class="number">149</span>KB/s   in <span class="number">1</span>m <span class="number">41</span>s 
+
+<span class="number">2015</span>-<span class="number">08</span>-<span class="number">01</span> <span class="number">13</span>:<span class="number">04</span>:<span class="number">20</span> (<span class="number">13.2</span> KB/s) - ‘redis-<span class="number">3.0</span><span class="number">.3</span>.tar.gz<span class="number">.1</span>’ saved [<span class="number">1360959</span>/<span class="number">1360959</span>]
+</code></pre><p>相比Mongodb，Redis文件还是很小的。<br>同样，在下载失败的时候，可以<a href="http://yunpan.cn/cdABZJ4uNn7vQ" target="_blank" rel="external">点击下载Redis3.0.3 访问密码dc5a</a>。</p>
+<h2 id="解压缩-1">解压缩</h2><pre><code><span class="attr_selector">[root@localhost local]</span># <span class="tag">tar</span> <span class="tag">-zxvf</span> <span class="tag">redis-3</span><span class="class">.0</span><span class="class">.3</span><span class="class">.tar</span><span class="class">.gz</span><span class="class">.1</span> 
+</code></pre><p>将文件解压缩到/usr/local文件夹下。</p>
+<h2 id="单独实例先Run起来">单独实例先Run起来</h2><p>这里与Mongodb不太一样，运行之前需要编译一下：</p>
+<pre><code>[root@localhost local]<span class="preprocessor"># cd redis-<span class="number">3.0</span><span class="number">.3</span>/</span>
+[root@localhost redis-<span class="number">3.0</span><span class="number">.3</span>]<span class="preprocessor"># make </span>
+</code></pre><p>需要稍等一下，终端显示</p>
+<pre><code><span class="attribute">Hint</span>: <span class="string">It's a good idea to run 'make test' ;)</span>
+
+<span class="cpp">make[<span class="number">1</span>]: Leaving directory `/usr/local/redis-<span class="number">3.0</span><span class="number">.3</span>/src'</span>
+</code></pre><p>则表示make成功。</p>
+<pre><code>[root@localhost redis-<span class="number">3.0</span><span class="number">.3</span>]<span class="preprocessor"># cd src/</span>
+[root@localhost src]<span class="preprocessor"># ./redis-server ../redis.conf </span>
+
+<span class="number">16790</span>:M <span class="number">01</span> Aug <span class="number">13</span>:<span class="number">15</span>:<span class="number">44.020</span> * The server is now ready to accept connections on port <span class="number">6379</span>
+</code></pre><p>进入src文件夹下，键入命令：./redis-server ../redis.conf ，就可以启动Redis实例。正常的运行结果则如上所示。</p>
+<p>在这里，因为不是以守护进程的形式启动的Redis，如果需要停止进行，在运行Redis的终端使用Ctrl+C来停止进程。</p>
+<pre><code>^C16790:signal-handler (<span class="number">1438406388</span>) Received SIGINT scheduling shutdown...
+<span class="number">16790</span>:M <span class="number">01</span> Aug <span class="number">13</span>:<span class="number">19</span>:<span class="number">48.465</span> <span class="preprocessor"># User requested shutdown...</span>
+<span class="number">16790</span>:M <span class="number">01</span> Aug <span class="number">13</span>:<span class="number">19</span>:<span class="number">48.465</span> * Saving the final RDB snapshot before exiting.
+<span class="number">16790</span>:M <span class="number">01</span> Aug <span class="number">13</span>:<span class="number">19</span>:<span class="number">48.507</span> * DB saved on disk
+<span class="number">16790</span>:M <span class="number">01</span> Aug <span class="number">13</span>:<span class="number">19</span>:<span class="number">48.507</span> <span class="preprocessor"># Redis is now ready to exit, bye bye...</span>
+</code></pre><h2 id="Redis集群，High起来">Redis集群，High起来</h2><p>Redis作为一个内存数据库，在实际的使用环境中，经常会受到机器内存大小的限制，在3.0之前的版本，集群需要采用proxy的方法，现在redis自身提供了cluster的支持。</p>
+<h3 id="集群搭建准备工作">集群搭建准备工作</h3><p>集群的搭建需要使用Redis下src文件夹中redis-trib.rb，这是一个ruby程序，因此需要系统中有ruby环境。</p>
+<pre><code>root<span class="constant">@localhost</span> src]<span class="preprocessor"># yum install ruby </span>
+[root<span class="constant">@localhost</span> src]<span class="preprocessor"># gem install redis</span>
+</code></pre><p>键入上边的命令，安装ruby 和 ruby 的redis 扩展。在安装扩展的时候，很有可能不能安装，可能是资源被墙了。可以使用我自己下载到的资源<a href="http://yunpan.cn/cdABc69IzjVvG" target="_blank" rel="external">redis.gem 访问密码9727</a>进行本地安装。</p>
+<pre><code>[root@localhost src]<span class="preprocessor"># gem install --local /usr/local/redis-<span class="number">3.0</span><span class="number">.0</span>.gem </span>
+</code></pre><p>将下载到的gem文件放到/usr/local目录下，使用上边的命令进行安装。这样，Redis集群的运行环境就搭建完毕。</p>
+<p>要做redis集群，至少需要3个Master实例。<br>先把redis的配置文件redis.conf和redis-server文件放到一个文件夹中：</p>
+<pre><code>[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># cd /usr/local</span>
+[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># mkdir -p ./redis-cluster/6379</span>
+[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># cp ./redis-3.0.3/redis.conf ./redis-3.0.3/src/redis-server ./redis-cluster/6379/</span>
+</code></pre><p>然后将文件夹6379复制两份：</p>
+<pre><code>[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># cd ./redis-cluster/</span>
+[root<span class="constant">@localhost</span> redis-cluster]<span class="preprocessor"># cp -rf ./6379/ ./6380</span>
+[root<span class="constant">@localhost</span> redis-cluster]<span class="preprocessor"># cp -rf ./6379 ./6381</span>
+</code></pre><p>接下来，需要作的就是修改对应文件夹下的redis.conf文件。</p>
+<pre><code><span class="title">port</span> <span class="number">6379</span> <span class="comment">#不同目录，这里端口对应不同</span>
+cluster-enabled <span class="built_in">yes</span> <span class="comment">#开启集群功能</span>
+cluster-config-file nodes.conf <span class="comment">#节点配置文件，这个文件是服务启动时自己配置创建的</span>
+cluster-node-timeout <span class="number">6000</span>
+appendonly <span class="built_in">yes</span>
+</code></pre><p>建议将conf文件中的save字段都屏蔽了，在使用过程中，发现开启之后，redis写rdb文件的时候对集群性能有很大影响。</p>
+<h3 id="集群_走起">集群 走起</h3><p>上边的步骤，完成了集群搭建的准备工作。下边要开始运行起来了！<br>先把三个redis实例启动起来。</p>
+<pre><code>[root@localhost src]<span class="preprocessor"># ps -ef | grep redis</span>
+root      <span class="number">18979</span>  <span class="number">18297</span>  <span class="number">0</span> <span class="number">14</span>:<span class="number">24</span> pts/<span class="number">0</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-server *:<span class="number">6379</span> [cluster]
+root      <span class="number">19094</span>  <span class="number">19057</span>  <span class="number">0</span> <span class="number">14</span>:<span class="number">25</span> pts/<span class="number">4</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-server *:<span class="number">6380</span> [cluster]
+root      <span class="number">19181</span>  <span class="number">19146</span>  <span class="number">0</span> <span class="number">14</span>:<span class="number">25</span> pts/<span class="number">7</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-server *:<span class="number">6381</span> [cluster]
+</code></pre><p>键入 ps -ef | grep redis 可以看到三个redis实例都在运行。<br>接下来使用redis-trib.rb来将三个实例连接起来。</p>
+<pre><code>[root@localhost src]<span class="preprocessor"># cd /usr/local/redis-<span class="number">3.0</span><span class="number">.3</span>/src/</span>
+[root@localhost src]<span class="preprocessor"># ./redis-trib.rb create --replicas <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6380</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6381</span></span>
+</code></pre><p>终端会有这样的显示：</p>
+<pre><code>&gt;&gt;&gt; Performing hash slots allocation on 3 nodes...
+Using 3 masters:
+<span class="number">127.0.0.1</span>:6379
+<span class="number">127.0.0.1</span>:6380
+<span class="number">127.0.0.1</span>:6381
+M: 4ee119039aebd<span class="number">0e1d48b3</span>f<span class="number">52149a7940</span>db34c6fb <span class="number">127.0.0.1</span>:6379
+   slots:0-5460 (5461 slots) master
+M: f6ad<span class="number">85a038a05</span>e<span class="number">297130f6e112</span>e223db54c47ea<span class="number">5 127.0.0</span>.1:6380
+   slots:<span class="number">5461-10922</span> (5462 slots) master
+M: <span class="number">0b97e4a7</span>f8e5ced<span class="number">1f2f247169</span>4b76dcf77ce1fc<span class="number">7 127.0.0</span>.1:6381
+   slots:<span class="number">10923-16383</span> (5461 slots) master
+Can I set the above configuration? (type 'yes' to accept):
+</code></pre><p>键入 yes </p>
+<pre><code><span class="prompt">&gt;&gt;</span>&gt; <span class="constant">Nodes</span> configuration updated
+<span class="prompt">&gt;&gt;</span>&gt; <span class="constant">Assign</span> a different config epoch to each node
+<span class="prompt">&gt;&gt;</span>&gt; <span class="constant">Sending</span> <span class="constant">CLUSTER</span> <span class="constant">MEET</span> messages to join the cluster
+<span class="constant">Waiting</span> <span class="keyword">for</span> the cluster to join.
+<span class="prompt">&gt;&gt;</span>&gt; <span class="constant">Performing</span> <span class="constant">Cluster</span> <span class="constant">Check</span> (using node <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">6379</span>)
+<span class="constant">M</span><span class="symbol">:</span> <span class="number">4</span>ee119039aebd0e1d48b3f52149a7940db34c6fb <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">6379</span>
+   <span class="symbol">slots:</span><span class="number">0</span>-<span class="number">5460</span> (<span class="number">5461</span> slots) master
+<span class="constant">M</span><span class="symbol">:</span> f6ad85a038a05e297130f6e112e223db54c47ea5 <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">6380</span>
+   <span class="symbol">slots:</span><span class="number">5461</span>-<span class="number">10922</span> (<span class="number">5462</span> slots) master
+<span class="constant">M</span><span class="symbol">:</span> 0b97e4a7f8e5ced1f2f2471694b76dcf77ce1fc7 <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">6381</span>
+   <span class="symbol">slots:</span><span class="number">10923</span>-<span class="number">16383</span> (<span class="number">5461</span> slots) master
+[<span class="constant">OK</span>] <span class="constant">All</span> nodes agree about slots configuration.
+<span class="prompt">&gt;&gt;</span>&gt; <span class="constant">Check</span> for open slots...
+<span class="prompt">&gt;&gt;</span>&gt; <span class="constant">Check</span> slots coverage...
+[<span class="constant">OK</span>] <span class="constant">All</span> <span class="number">16384</span> slots covered.
+</code></pre><p>测试一下，集群是否正常工作。</p>
+<pre><code>[root@localhost src]<span class="preprocessor"># ./redis-cli -c -h <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> -p <span class="number">6379</span></span>
+<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; <span class="built_in">set</span> key values
+-&gt; Redirected to slot [<span class="number">12539</span>] located at <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6381</span>
+OK
+</code></pre><p>这样，集群就算搭建完成了。哈哈哈。</p>
+
     
   </div>
   <footer>
