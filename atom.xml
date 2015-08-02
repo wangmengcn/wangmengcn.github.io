@@ -5,7 +5,7 @@
   <subtitle><![CDATA[搬砖路上有你有我]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://eclipsesv.com//"/>
-  <updated>2015-08-02T13:42:23.315Z</updated>
+  <updated>2015-08-02T13:44:48.466Z</updated>
   <id>http://eclipsesv.com//</id>
   
   <author>
@@ -20,8 +20,9 @@
     <link href="http://eclipsesv.com/2015/08/02/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/"/>
     <id>http://eclipsesv.com/2015/08/02/服务器端缓存环境配置-二/</id>
     <published>2015-08-02T11:14:56.000Z</published>
-    <updated>2015-08-02T13:42:23.315Z</updated>
+    <updated>2015-08-02T13:44:48.466Z</updated>
     <content type="html"><![CDATA[<p>上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。</p>
+<a id="more"></a>
 <h1 id="Web服务器"><strong>Web服务器</strong></h1><p>整个缓存流程中，客户端都是以HTTP请求的方式获取服务器上数据库中的数据。我们选择了Nginx作为HTTP请求解析和负载均衡的工具。<br>Nginx作为一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP 代理服务器。它以稳定性、丰富的功能和第系统资源消耗而闻名。下面开始介绍Nginx的安装和配置：<br>以往的安装方式都是直接编译源码，这次来点新的。</p>
 <h2 id="Ngxin打包安装">Ngxin打包安装</h2><p>按照<a href="http://nginx.org/en/linux_packages.html" target="_blank" rel="external">nginx官网</a>上的方法来进行操作。<br>首先打开终端，进入/usr/local目录，下载rpm文件：</p>
 <pre><code>[wangmeg<span class="constant">@localhost</span> ~]$ cd /usr/<span class="keyword">local</span>
@@ -73,8 +74,8 @@ Complete!
 <p>如果没有错误提示，则表示nginx编译安装完成。<br>现在键入命令/usr/local/nginx/sbin/nginx就可以启动nginx了。<br>另外，终止nginx的命令使用：/usr/local/nginx/sbin/nginx -s stop；进行nginx平滑重启使用命令/usr/local/nginx/sbin/nginx -s reload。</p>
 <h1 id="PHP"><strong>PHP</strong></h1>]]></content>
     <summary type="html">
-    <![CDATA[<p>上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。</p>
-<h1 id="Web服务器"><strong>Web服务器</strong></h1><p>整个缓存流程中，客户端都是以HTTP请求的方式获取服务器上数据库中的数据。我们]]>
+    <![CDATA[<p>上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。</p>]]>
+    
     </summary>
     
       <category term="Lua" scheme="http://eclipsesv.com/tags/Lua/"/>
