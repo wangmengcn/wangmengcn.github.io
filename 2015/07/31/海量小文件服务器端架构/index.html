@@ -1,159 +1,321 @@
-<!DOCTYPE HTML>
-<html>
+
+ <!DOCTYPE HTML>
+<html >
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta charset="UTF-8">
   
-  <title>海量小文件服务器端缓存架构 | 搬砖工的日常</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
+    <title>海量小文件服务器端缓存架构 | 搬砖工的日常</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
     <meta name="author" content="wm">
-  
-  
+    
     <meta name="description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
-  
-  <meta name="description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="海量小文件服务器端缓存架构">
-<meta property="og:url" content="http://eclipsesv.com/2015/07/31/海量小文件服务器端架构/index.html">
-<meta property="og:site_name" content="搬砖工的日常">
-<meta property="og:description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
-<meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgserver_structure.jpg">
-<meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg">
-<meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgab.png">
-<meta property="og:updated_time" content="2015-08-01T02:25:39.635Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="海量小文件服务器端缓存架构">
-<meta name="twitter:description" content="写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。">
-  
-    <link rel="alternate" href="/atom.xml" title="搬砖工的日常" type="application/atom+xml">
-  
-  
-    <link rel="icon" type="image/x-icon" href="http://7xkswi.com1.z0.glb.clouddn.com/WeatherBundle.png">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
 </head>
 
-<body>
-  <div class="wrapper">
-    <header id="header">
-  <div class="title">
-    <h1><a href="/">搬砖工的日常</a></h1>
-    <p><a href="/">搬砖路上有你有我</a></p>
-  </div>
-  <nav class="nav">
-    <ul>
-      
-        <li><a href="/">Home</a></li>
-      
-        <li><a href="/archives">Archives</a></li>
-      
-      
-        <li><a href="/atom.xml">RSS</a></li>
-      
-    </ul>
-    <div class="clearfix"></div>
-  </nav>
-  <div class="clearfix"></div>
-</header>
-    <div class="content"><article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/07/31/海量小文件服务器端架构/">
-  <time datetime="2015-07-31T07:17:09.000Z">
-    2015-07-31
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title">海量小文件服务器端缓存架构</h1>
-  
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="搬砖工的日常" title="搬砖工的日常"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="搬砖工的日常">搬砖工的日常</a></h1>
+				<h2 class="blog-motto">搬砖路上有你有我</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:eclipsesv.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
 
-  </header>
-  
-  <div class="entry">
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
     
-      <h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/" target="_blank" rel="external">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。<a id="more"></a>总体的数据请求和返回就是这样，但是，服务器在得到请求之后，每次都从磁盘数据库中检索数据，而这一检索过程通常不止一遍（因为客户端可能重复观察同一片地区），在多用户使用的情况下，这种无用的时间消耗更是令人难以忍受。同时，多次检索同一条数据，也会增加服务器的I/O负载，浪费服务器资源。</p>
+      <a href="/2015/07/31/海量小文件服务器端架构/" title="海量小文件服务器端缓存架构" itemprop="url">海量小文件服务器端缓存架构</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://eclipsesv.com" title="wm">wm</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-07-31T07:17:09.000Z" itemprop="datePublished">2015-07-31</time>
+    更新日期:<time datetime="2015-08-01T02:25:39.635Z" itemprop="dateModified">2015-08-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#写在前边"><span class="toc-number">1.</span> <span class="toc-text">写在前边</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#架构设计"><span class="toc-number">2.</span> <span class="toc-text">架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器端缓存架构"><span class="toc-number">2.1.</span> <span class="toc-text">服务器端缓存架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器缓存时序图"><span class="toc-number">2.2.</span> <span class="toc-text">服务器缓存时序图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#缓存效果"><span class="toc-number">3.</span> <span class="toc-text">缓存效果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#未完待续"><span class="toc-number">4.</span> <span class="toc-text">未完待续</span></a></li></ol>
+		</div>
+		
+		<h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/" target="_blank" rel="external">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。<a id="more"></a>总体的数据请求和返回就是这样，但是，服务器在得到请求之后，每次都从磁盘数据库中检索数据，而这一检索过程通常不止一遍（因为客户端可能重复观察同一片地区），在多用户使用的情况下，这种无用的时间消耗更是令人难以忍受。同时，多次检索同一条数据，也会增加服务器的I/O负载，浪费服务器资源。</p>
 <h1 id="架构设计">架构设计</h1><h2 id="服务器端缓存架构">服务器端缓存架构</h2><p>为了避免多次对同一条数据的磁盘数据库检索，在服务器端构建一套缓存机制，可以有效避免这样的情况。<br>废话不多说，直接上图：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgserver_structure.jpg" alt="服务器端缓存架构" title="服务器缓存架构图"><br>在服务器端，增加内存数据<a href="http://redis.io/" title="Redis" target="_blank" rel="external">Redis</a>，作为缓存。借助Redis的优秀性能，在数据缓存到Redis之后，可以有效减少每条数据请求的时间消耗。</p>
 <h2 id="服务器缓存时序图">服务器缓存时序图</h2><p>在服务器端，数据请求的流程可以由以下的时序图来说明：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgtime_stream.jpg" alt="服务器端时序图" title="服务器端缓存时序图"></p>
 <h1 id="缓存效果">缓存效果</h1><p>在增加缓存机制前后，数据调度效率的对比如下所示：<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipse_jpgab.png" alt="增加缓存前后每条数据平均请求时间消耗" title="数据平均时间消耗"><br>使用三维球对同一区域进行绕点飞行，可以看到，在飞行的第一圈，数据缓存到Redis中有较多的时间消耗，第一圈飞行完毕之后，使用缓存的数据请求时间消耗明显小于未使用缓存的数据请求。</p>
 <h1 id="未完待续">未完待续</h1><p>在接下来的几篇文章中，我会持续详细讲解这套缓存机制在服务器端包括<strong>Web服务器</strong>、<strong>消息中间件</strong>、<strong>MongoDB</strong>和<strong>Redis集群</strong>的内容。</p>
-
-    
-  </div>
-  <footer>
-    
-      
-  <div class="categories">
-    <a class="categories-link" href="/categories/服务器/">服务器</a>
-  </div>
-
-      
-  <div class="tags">
-    <a class="tags-link" href="/tags/Mongodb/">Mongodb</a>, <a class="tags-link" href="/tags/Nginx/">Nginx</a>, <a class="tags-link" href="/tags/Redis/">Redis</a>
-  </div>
-
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-<section id="comment">
-  <h1 class="title">评论</h1>
-  <div class="ds-thread" data-title="海量小文件服务器端缓存架构">
-  </div>
-</section>
-</div>
-  </div>
-  <footer id="footer"><div class="copyright">
   
-  &copy; 2015 <a href="/">wm</a>
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
   
+  <span></span> <a href="/tags/Mongodb/">Mongodb</a><a href="/tags/Nginx/">Nginx</a><a href="/tags/Redis/">Redis</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/服务器/">服务器</a>
 </div>
-<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://eclipsesv.com/2015/07/31/海量小文件服务器端架构/" data-title="海量小文件服务器端缓存架构 | 搬砖工的日常" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/07/31/送给自己/" title="送给自己">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  送给自己</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#写在前边"><span class="toc-number">1.</span> <span class="toc-text">写在前边</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#架构设计"><span class="toc-number">2.</span> <span class="toc-text">架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器端缓存架构"><span class="toc-number">2.1.</span> <span class="toc-text">服务器端缓存架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器缓存时序图"><span class="toc-number">2.2.</span> <span class="toc-text">服务器缓存时序图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#缓存效果"><span class="toc-number">3.</span> <span class="toc-text">缓存效果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#未完待续"><span class="toc-number">4.</span> <span class="toc-text">未完待续</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+			<li><a href="/categories/心情文字/" title="心情文字">心情文字<sup>1</sup></a></li>
+		
+			<li><a href="/categories/服务器/" title="服务器">服务器<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Lua/" title="Lua">Lua<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Mongodb/" title="Mongodb">Mongodb<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>3</sup></a></li>
+		
+			<li><a href="/tags/PHP/" title="PHP">PHP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Redis/" title="Redis">Redis<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://eclipsesv.com" target="_blank" title="wm">wm</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
 </script>
-<div class="theme-copyright">
-  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
-   | 
-  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
-   |
-  	<span id="busuanzi_container_site_pv">
-    	本站总访问量<span id="busuanzi_value_site_pv"></span>次
-	</span>
-</div>
-<div class="clearfix"></div></footer>
-  <script src="//ajax.useso.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-<script src="/js/scale.fix.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
 
 
 <script type="text/javascript">
-  var duoshuoQuery = { short_name: 'eclipsesv' };
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';
-    ds.async = true;
-    ds.src = 'http://static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
 </script>
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-  (function($){
-    $('.fancybox').fancybox();
-  })(jQuery);
-</script>
 
-</body>
+
+
+  </body>
 </html>
