@@ -10,16 +10,23 @@
     <meta name="author" content="wm">
   
   
-  <meta name="description">
+    <meta name="description" content="上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。
+Web服务器整个缓存流程中，客户端都是以HTTP请求的方式获取服务器上数据库中的数据。我们选择了Nginx作为HTTP请求解析和负载均衡的工具。Nginx作为一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP 代理服务器。它以稳定性、丰富的功能和第系统资源消耗而闻名。下面开始介绍N">
+  
+  <meta name="description" content="上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。
+Web服务器整个缓存流程中，客户端都是以HTTP请求的方式获取服务器上数据库中的数据。我们选择了Nginx作为HTTP请求解析和负载均衡的工具。Nginx作为一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP 代理服务器。它以稳定性、丰富的功能和第系统资源消耗而闻名。下面开始介绍N">
 <meta property="og:type" content="article">
 <meta property="og:title" content="服务器端缓存环境配置(二)">
 <meta property="og:url" content="http://eclipsesv.com/2015/08/02/服务器端缓存环境配置-二/index.html">
 <meta property="og:site_name" content="搬砖工的日常">
-<meta property="og:description">
-<meta property="og:updated_time" content="2015-08-02T11:14:56.532Z">
+<meta property="og:description" content="上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。
+Web服务器整个缓存流程中，客户端都是以HTTP请求的方式获取服务器上数据库中的数据。我们选择了Nginx作为HTTP请求解析和负载均衡的工具。Nginx作为一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP 代理服务器。它以稳定性、丰富的功能和第系统资源消耗而闻名。下面开始介绍N">
+<meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgScreenshot%20from%202015-08-02%2020%3A29%3A42.png">
+<meta property="og:updated_time" content="2015-08-02T13:42:23.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务器端缓存环境配置(二)">
-<meta name="twitter:description">
+<meta name="twitter:description" content="上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。
+Web服务器整个缓存流程中，客户端都是以HTTP请求的方式获取服务器上数据库中的数据。我们选择了Nginx作为HTTP请求解析和负载均衡的工具。Nginx作为一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP 代理服务器。它以稳定性、丰富的功能和第系统资源消耗而闻名。下面开始介绍N">
   
     <link rel="alternate" href="/atom.xml" title="搬砖工的日常" type="application/atom+xml">
   
@@ -72,13 +79,71 @@
   
   <div class="entry">
     
-      
+      <p>上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。</p>
+<h1 id="Web服务器"><strong>Web服务器</strong></h1><p>整个缓存流程中，客户端都是以HTTP请求的方式获取服务器上数据库中的数据。我们选择了Nginx作为HTTP请求解析和负载均衡的工具。<br>Nginx作为一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP 代理服务器。它以稳定性、丰富的功能和第系统资源消耗而闻名。下面开始介绍Nginx的安装和配置：<br>以往的安装方式都是直接编译源码，这次来点新的。</p>
+<h2 id="Ngxin打包安装">Ngxin打包安装</h2><p>按照<a href="http://nginx.org/en/linux_packages.html" target="_blank" rel="external">nginx官网</a>上的方法来进行操作。<br>首先打开终端，进入/usr/local目录，下载rpm文件：</p>
+<pre><code>[wangmeg<span class="constant">@localhost</span> ~]$ cd /usr/<span class="keyword">local</span>
+[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># wget http://nginx.org/packages/centos/7/noarch/RPMS/nginx-    release-centos-7-0.el7.ngx.noarch.rpm</span>
+</code></pre><p>之后安装rpm文件，并使用yum 命令进行Nginx的自动安装：</p>
+<pre><code>[root<span class="variable">@localhost</span> <span class="keyword">local</span>]<span class="comment"># rpm -i nginx-release-centos-7-0.el7.ngx.noarch.rpm </span>
+[root<span class="variable">@localhost</span> <span class="keyword">local</span>]<span class="comment"># yum install nginx</span>
+</code></pre><p>稍等片刻，终端出现</p>
+<pre><code>----------------------------------------------------------------------
+
+Thanks <span class="keyword">for</span> <span class="keyword">using</span> nginx!
+
+Please find the official documentation <span class="keyword">for</span> nginx here:
+* http:<span class="comment">//nginx.org/en/docs/</span>
+
+Commercial subscriptions <span class="keyword">for</span> nginx are available on:
+* http:<span class="comment">//nginx.com/products/</span>
+
+----------------------------------------------------------------------
+  Verifying  : <span class="number">1</span>:nginx-<span class="number">1.8</span><span class="number">.0</span>-<span class="number">1.</span>el7.ngx.x86_64                               <span class="number">1</span>/<span class="number">1</span> 
+
+Installed:
+  nginx.x86_64 <span class="number">1</span>:<span class="number">1.8</span><span class="number">.0</span>-<span class="number">1.</span>el7.ngx                                                
+
+Complete!
+</code></pre><p>表示Nginx安装完毕。现在，在终端键入命令nginx启动nginx，在浏览器中输入http:127.0.0.1之后出现<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgScreenshot%20from%202015-08-02%2020%3A29%3A42.png" alt=""><br>这样，Nginx就算安装完毕了。<br>可以在终端键入命令： nginx -V 来查看这样默认安装的相关配置。</p>
+<pre><code><span class="title">[</span><span class="comment">root@localhost</span> <span class="comment">local</span><span class="title">]</span><span class="comment">#</span> <span class="comment">nginx</span> <span class="literal">-</span><span class="comment">V</span>
+<span class="comment">nginx</span> <span class="comment">version:</span> <span class="comment">nginx/1</span><span class="string">.</span><span class="comment">8</span><span class="string">.</span><span class="comment">0</span>
+<span class="comment">built</span> <span class="comment">by</span> <span class="comment">gcc</span> <span class="comment">4</span><span class="string">.</span><span class="comment">8</span><span class="string">.</span><span class="comment">2</span> <span class="comment">20140120</span> <span class="comment">(Red</span> <span class="comment">Hat</span> <span class="comment">4</span><span class="string">.</span><span class="comment">8</span><span class="string">.</span><span class="comment">2</span><span class="literal">-</span><span class="comment">16)</span> <span class="comment">(GCC)</span> 
+<span class="comment">built</span> <span class="comment">with</span> <span class="comment">OpenSSL</span> <span class="comment">1</span><span class="string">.</span><span class="comment">0</span><span class="string">.</span><span class="comment">1e</span><span class="literal">-</span><span class="comment">fips</span> <span class="comment">11</span> <span class="comment">Feb</span> <span class="comment">2013</span>
+<span class="comment">TLS</span> <span class="comment">SNI</span> <span class="comment">support</span> <span class="comment">enabled</span>
+<span class="comment">configure</span> <span class="comment">arguments:</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">prefix=/etc/nginx</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">sbin</span><span class="literal">-</span><span class="comment">path=/usr/sbin/nginx</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">conf</span><span class="literal">-</span><span class="comment">path=/etc/nginx/nginx</span><span class="string">.</span><span class="comment">conf</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">error</span><span class="literal">-</span><span class="comment">log</span><span class="literal">-</span><span class="comment">path=/var/log/nginx/error</span><span class="string">.</span><span class="comment">log</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">http</span><span class="literal">-</span><span class="comment">log</span><span class="literal">-</span><span class="comment">path=/var/log/nginx/access</span><span class="string">.</span><span class="comment">log</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">pid</span><span class="literal">-</span><span class="comment">path=/var/run/nginx</span><span class="string">.</span><span class="comment">pid</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">lock</span><span class="literal">-</span><span class="comment">path=/var/run/nginx</span><span class="string">.</span><span class="comment">lock</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">http</span><span class="literal">-</span><span class="comment">client</span><span class="literal">-</span><span class="comment">body</span><span class="literal">-</span><span class="comment">temp</span><span class="literal">-</span><span class="comment">path=/var/cache/nginx/client_temp</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">http</span><span class="literal">-</span><span class="comment">proxy</span><span class="literal">-</span><span class="comment">temp</span><span class="literal">-</span><span class="comment">path=/var/cache/nginx/proxy_temp</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">http</span><span class="literal">-</span><span class="comment">fastcgi</span><span class="literal">-</span><span class="comment">temp</span><span class="literal">-</span><span class="comment">path=/var/cache/nginx/fastcgi_temp</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">http</span><span class="literal">-</span><span class="comment">uwsgi</span><span class="literal">-</span><span class="comment">temp</span><span class="literal">-</span><span class="comment">path=/var/cache/nginx/uwsgi_temp</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">http</span><span class="literal">-</span><span class="comment">scgi</span><span class="literal">-</span><span class="comment">temp</span><span class="literal">-</span><span class="comment">path=/var/cache/nginx/scgi_temp</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=nginx</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">group=nginx</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_ssl_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_realip_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_addition_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_sub_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_dav_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_flv_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_mp4_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_gunzip_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_gzip_static_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_random_index_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_secure_link_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_stub_status_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_auth_request_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">mail</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">mail_ssl_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">file</span><span class="literal">-</span><span class="comment">aio</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">ipv6</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">http_spdy_module</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">with</span><span class="literal">-</span><span class="comment">cc</span><span class="literal">-</span><span class="comment">opt='</span><span class="literal">-</span><span class="comment">O2</span> <span class="literal">-</span><span class="comment">g</span> <span class="literal">-</span><span class="comment">pipe</span> <span class="literal">-</span><span class="comment">Wp</span><span class="string">,</span><span class="literal">-</span><span class="comment">D_FORTIFY_SOURCE=2</span> <span class="literal">-</span><span class="comment">fexceptions</span> <span class="literal">-</span><span class="comment">fstack</span><span class="literal">-</span><span class="comment">protector</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">param=ssp</span><span class="literal">-</span><span class="comment">buffer</span><span class="literal">-</span><span class="comment">size=4</span> <span class="literal">-</span><span class="comment">m64</span> <span class="literal">-</span><span class="comment">mtune=generic'</span>
+</code></pre><h2 id="Nginx源码编译">Nginx源码编译</h2><p>相对于上述使用yum安装nginx，我更习惯编译源码安装。<br>在进行安装以前，需要安装pcre和zlib。</p>
+<h3 id="pcre安装">pcre安装</h3><pre><code>[root<span class="constant">@localhost</span> etc]<span class="preprocessor"># cd /usr/local</span>
+[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.gz</span>
+[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># tar -zxvf pcre-8.37.tar.gz </span>
+[root<span class="constant">@localhost</span> pcre-<span class="number">8.37</span>]<span class="preprocessor"># cd pcre-8.37/</span>
+[root<span class="constant">@localhost</span> pcre-<span class="number">8.37</span>]<span class="preprocessor"># ./configure </span>
+[root<span class="constant">@localhost</span> pcre-<span class="number">8.37</span>]<span class="preprocessor"># make </span>
+[root<span class="constant">@localhost</span> pcre-<span class="number">8.37</span>]<span class="preprocessor"># make install</span>
+</code></pre><p>这样，pcre就算安装完成。</p>
+<h3 id="zlib安装">zlib安装</h3><pre><code>[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># wget http://zlib.net/zlib-1.2.8.tar.gz</span>
+[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># tar -zxvcf zlib-1.2.8.tar.gz </span>
+[root<span class="constant">@localhost</span> <span class="keyword">local</span>]<span class="preprocessor"># cd zlib-1.2.8/</span>
+[root<span class="constant">@localhost</span> zlib-<span class="number">1.2</span><span class="number">.8</span>]<span class="preprocessor"># make &amp;&amp; make install</span>
+</code></pre><p>OK，zlib也安装完毕。</p>
+<h3 id="Nginx源码编译安装">Nginx源码编译安装</h3><p>接下来下载nginx源码，完成后续的安装和配置。</p>
+<p>[root@localhost pcre-8.37]# cd /usr/local<br>[root@localhost local]# wget <a href="http://nginx.org/download/nginx-1.8.0.tar.gz" target="_blank" rel="external">http://nginx.org/download/nginx-1.8.0.tar.gz</a><br>[root@localhost local]# tar -zxvf nginx-1.8.0.tar.gz<br>[root@localhost local]# cd ./nginx-1.8.0/<br>[root@localhost nginx-1.8.0]# ./configure –prefix=/usr/local/nginx<br>[root@localhost nginx-1.8.0]# make &amp;&amp; make install</p>
+<p>如果没有错误提示，则表示nginx编译安装完成。<br>现在键入命令/usr/local/nginx/sbin/nginx就可以启动nginx了。<br>另外，终止nginx的命令使用：/usr/local/nginx/sbin/nginx -s stop；进行nginx平滑重启使用命令/usr/local/nginx/sbin/nginx -s reload。</p>
+<h1 id="PHP"><strong>PHP</strong></h1>
     
   </div>
   <footer>
     
       
+  <div class="categories">
+    <a class="categories-link" href="/categories/服务器/">服务器</a>
+  </div>
+
       
+  <div class="tags">
+    <a class="tags-link" href="/tags/Lua/">Lua</a>, <a class="tags-link" href="/tags/Mongodb/">Mongodb</a>, <a class="tags-link" href="/tags/Nginx/">Nginx</a>, <a class="tags-link" href="/tags/PHP/">PHP</a>, <a class="tags-link" href="/tags/Redis/">Redis</a>
+  </div>
+
     
     <div class="clearfix"></div>
   </footer>
