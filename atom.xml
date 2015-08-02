@@ -5,7 +5,7 @@
   <subtitle><![CDATA[搬砖路上有你有我]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://eclipsesv.com//"/>
-  <updated>2015-08-01T06:52:51.834Z</updated>
+  <updated>2015-08-02T11:14:56.532Z</updated>
   <id>http://eclipsesv.com//</id>
   
   <author>
@@ -14,6 +14,19 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[服务器端缓存环境配置(二)]]></title>
+    <link href="http://eclipsesv.com/2015/08/02/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/"/>
+    <id>http://eclipsesv.com/2015/08/02/服务器端缓存环境配置-二/</id>
+    <published>2015-08-02T11:14:56.000Z</published>
+    <updated>2015-08-02T11:14:56.532Z</updated>
+    <content type="html"></content>
+    <summary type="html">
+    
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[服务器端缓存环境配置]]></title>
