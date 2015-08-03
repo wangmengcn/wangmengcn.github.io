@@ -1,252 +1,718 @@
-
- <!DOCTYPE HTML>
-<html >
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
 <head>
-  <meta charset="UTF-8">
   
-    <title>搬砖工的日常</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="wm">
-    
-    
-    
-    
-    <link rel="alternate" href="/atom.xml" title="搬砖工的日常" type="application/atom+xml">
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/cat.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/cat.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css" type="text/css">
-</head>
 
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/favicon.ico" alt="搬砖工的日常" title="搬砖工的日常"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="搬砖工的日常">搬砖工的日常</a></h1>
-				<h2 class="blog-motto">搬砖路上有你有我</h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">Archives</a></li>
-					
-					<li>
-					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:eclipsesv.com">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
-
-    </header>
-    <div id="container">
-      <div id="main">
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2015/08/02/服务器端缓存环境配置-二/" title="服务器端缓存环境配置(二)" itemprop="url">
-  
-    <h1 itemprop="name">服务器端缓存环境配置(二)</h1>
-    
-     
-       <p itemprop="description" >上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。</p>
-      
-    
-    <time datetime="2015-08-02T11:14:56.000Z" itemprop="datePublished">2015-08-02</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2015/07/31/服务器端缓存环境配置/" title="服务器端缓存环境配置" itemprop="url">
-  
-    <h1 itemprop="name">服务器端缓存环境配置</h1>
-    
-     
-       <p itemprop="description" >原材料正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
-
-Nginx作为Web服务器的存在
-Mongodb磁盘数据库
-Lua与Nginx结合，进行服务器端的逻辑控制
-Redis内存数据库，高速缓存
-PHP读取磁盘数据库信息，返回给客户端</p>
-      
-    
-    <time datetime="2015-07-31T15:39:02.000Z" itemprop="datePublished">2015-07-31</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2015/07/31/送给自己/" title="送给自己" itemprop="url">
-  
-    <h1 itemprop="name">送给自己</h1>
-    
-     
-           <p itemprop="description" >总有一天，你将破茧而出成长的比人们期待的还要美丽
-但这个过程会很痛会很辛苦
-面对着汹涌而来的现实觉得自己渺小无力
-但这 也是生命的一部分做好现在你能做的 然后 一切都会好的我们都将孤独地长大 不要害怕</p>
-        
-    
-    <time datetime="2015-07-31T07:17:09.000Z" itemprop="datePublished">2015-07-31</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2015/07/31/海量小文件服务器端架构/" title="海量小文件服务器端缓存架构" itemprop="url">
-  
-    <h1 itemprop="name">海量小文件服务器端缓存架构</h1>
-    
-     
-       <p itemprop="description" >写在前边在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：数据请求是从一个使用OSG-earth开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回</p>
-      
-    
-    <time datetime="2015-07-31T07:17:09.000Z" itemprop="datePublished">2015-07-31</time>
-  </a>
-</section>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-</div>
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
-
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
-<aside class="clearfix">
-
-  
-<div class="categorieslist">
-	<p class="asidetitle">分類</p>
-		<ul>
-		
-			<li><a href="/categories/心情文字/" title="心情文字">心情文字<sup>1</sup></a></li>
-		
-			<li><a href="/categories/服务器/" title="服务器">服务器<sup>3</sup></a></li>
-		
-		</ul>
-</div>
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
-  
-<div class="tagslist">
-	<p class="asidetitle">標簽</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/Lua/" title="Lua">Lua<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Mongodb/" title="Mongodb">Mongodb<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>3</sup></a></li>
-		
-			<li><a href="/tags/PHP/" title="PHP">PHP<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Redis/" title="Redis">Redis<sup>3</sup></a></li>
-		
-		</ul>
-</div>
 
 
-  <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
-</div>
 
-</aside>
-</div>
-    </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font clearfix">
-		
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
-		
-		<a href="http://eclipsesv.com" target="_blank" title="wm">wm</a>
-		
-		</p>
-</div>
-</footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+
+
+  <meta name="keywords" content="Nginx,Mongodb,Redis" />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="搬砖工的日常" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="搬砖工的日常">
+<meta property="og:url" content="http://eclipsesv.com/index.html">
+<meta property="og:site_name" content="搬砖工的日常">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搬砖工的日常">
+<meta name="twitter:description">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
   };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
-        
-    }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
 </script>
 
+  <title> 搬砖工的日常 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
 
 
 
+  <div class="container one-column 
+   page-home 
+">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">搬砖工的日常</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+  <section id="posts" class="posts-expand">
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/02/服务器端缓存环境配置-二/" itemprop="url">
+                服务器端缓存环境配置(二)
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-08-02T19:14:56+08:00" content="2015-08-02">
+            2015-08-02
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/服务器/" itemprop="url" rel="index">
+                  <span itemprop="name">服务器</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/02/服务器端缓存环境配置-二/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/02/服务器端缓存环境配置-二/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/08/02/服务器端缓存环境配置-二/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/07/31/服务器端缓存环境配置/" itemprop="url">
+                服务器端缓存环境配置
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-31T23:39:02+08:00" content="2015-07-31">
+            2015-07-31
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/服务器/" itemprop="url" rel="index">
+                  <span itemprop="name">服务器</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/07/31/服务器端缓存环境配置/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/31/服务器端缓存环境配置/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h1 id="原材料"><strong>原材料</strong></h1><p>正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。</p>
+<ul>
+<li><a href="http://nginx.org/" title="作为Web服务器的存在">Nginx</a>作为Web服务器的存在</li>
+<li><a href="https://www.mongodb.org/" title="磁盘数据库">Mongodb</a>磁盘数据库</li>
+<li><a href="http://www.lua.org/" title="与Nginx结合，进行服务器端的逻辑控制">Lua</a>与Nginx结合，进行服务器端的逻辑控制</li>
+<li><a href="http://redis.io/" title="高速缓存">Redis</a>内存数据库，高速缓存</li>
+<li><a href="http://www.php.net/" title="返回数据库信息给客户端">PHP</a>读取磁盘数据库信息，返回给客户端</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/07/31/服务器端缓存环境配置/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/07/31/送给自己/" itemprop="url">
+                送给自己
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-31T15:17:09+08:00" content="2015-07-31">
+            2015-07-31
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/心情文字/" itemprop="url" rel="index">
+                  <span itemprop="name">心情文字</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/07/31/送给自己/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/31/送给自己/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p><strong>总有一天，你将破茧而出</strong><br><strong>成长的比人们期待的还要美丽</strong></p>
+<p><strong>但这个过程会很痛</strong><br><strong>会很辛苦</strong></p>
+<p><strong>面对着汹涌而来的现实</strong><br><strong>觉得自己渺小无力</strong></p>
+<p><strong>但这 也是生命的一部分</strong><br><strong>做好现在你能做的 然后 一切都会好的</strong><br><strong>我们都将孤独地长大 不要害怕</strong></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/07/31/海量小文件服务器端架构/" itemprop="url">
+                海量小文件服务器端缓存架构
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-31T15:17:09+08:00" content="2015-07-31">
+            2015-07-31
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/服务器/" itemprop="url" rel="index">
+                  <span itemprop="name">服务器</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/07/31/海量小文件服务器端架构/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/31/海量小文件服务器端架构/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h1 id="写在前边">写在前边</h1><p>在仔细讲解服务器端架构之前，我需要先说明一下使用场景和遇到的问题：<br>数据请求是从一个使用<a href="http://osgearth.org/">OSG-earth</a>开发的三维地球发出的，三维球跟据当前的视点高度和视口计算出需要的数据名，生成http请求，发送给服务器，服务器根据http请求中的数据名称，从磁盘数据库中检索数据，返回给客户端数据库检索结果，三维球得到数据，解析数据，并将其实时绘制出来。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/07/31/海量小文件服务器端架构/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+ </div>
+
+        
+
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="wm" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">wm</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description"></p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"eclipsesv"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
 
 
 
-  </body>
- </html>
+  <script type="text/javascript" src="/js/nav-toggle.js"></script>
+
+  
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"eclipsesv"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
