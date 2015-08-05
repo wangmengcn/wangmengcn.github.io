@@ -26,7 +26,7 @@
 
 
 
-  <meta name="keywords" content="Nginx,Mongodb,Redis" />
+  <meta name="keywords" content="Lua,Mongodb,Nginx,Redis," />
 
 
 
@@ -37,25 +37,29 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="总有一天，你将破茧而出成长的比人们期待的还要美丽
-但这个过程会很痛会很辛苦
-面对着汹涌而来的现实觉得自己渺小无力
-但这 也是生命的一部分做好现在你能做的 然后 一切都会好的我们都将孤独地长大 不要害怕">
+<meta name="description" content="nginx的Lua扩展接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。想要在nginx里边增加lua扩展，需要的模块如下：
+
+luajit
+ngx_devel_kit
+lua_nginx_module">
 <meta property="og:type" content="article">
-<meta property="og:title" content="送给自己">
-<meta property="og:url" content="http://eclipsesv.com/2015/07/31/送给自己/index.html">
+<meta property="og:title" content="服务器端缓存环境配置(三)">
+<meta property="og:url" content="http://eclipsesv.com/2015/08/04/服务器端缓存环境配置-三/index.html">
 <meta property="og:site_name" content="搬砖工的日常">
-<meta property="og:description" content="总有一天，你将破茧而出成长的比人们期待的还要美丽
-但这个过程会很痛会很辛苦
-面对着汹涌而来的现实觉得自己渺小无力
-但这 也是生命的一部分做好现在你能做的 然后 一切都会好的我们都将孤独地长大 不要害怕">
-<meta property="og:updated_time" content="2015-07-31T07:18:48.490Z">
+<meta property="og:description" content="nginx的Lua扩展接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。想要在nginx里边增加lua扩展，需要的模块如下：
+
+luajit
+ngx_devel_kit
+lua_nginx_module">
+<meta property="og:image" content="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgIMG_1877.JPG">
+<meta property="og:updated_time" content="2015-08-05T03:38:22.860Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="送给自己">
-<meta name="twitter:description" content="总有一天，你将破茧而出成长的比人们期待的还要美丽
-但这个过程会很痛会很辛苦
-面对着汹涌而来的现实觉得自己渺小无力
-但这 也是生命的一部分做好现在你能做的 然后 一切都会好的我们都将孤独地长大 不要害怕">
+<meta name="twitter:title" content="服务器端缓存环境配置(三)">
+<meta name="twitter:description" content="nginx的Lua扩展接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。想要在nginx里边增加lua扩展，需要的模块如下：
+
+luajit
+ngx_devel_kit
+lua_nginx_module">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -65,7 +69,7 @@
   };
 </script>
 
-  <title> 送给自己 | 搬砖工的日常 </title>
+  <title> 服务器端缓存环境配置(三) | 搬砖工的日常 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -174,7 +178,7 @@
           
           
             
-              送给自己
+              服务器端缓存环境配置(三)
             
           
         </h1>
@@ -183,8 +187,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-07-31T15:17:09+08:00" content="2015-07-31">
-            2015-07-31
+          <time itemprop="dateCreated" datetime="2015-08-04T09:14:27+08:00" content="2015-08-04">
+            2015-08-04
           </time>
         </span>
 
@@ -193,8 +197,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/心情文字/" itemprop="url" rel="index">
-                  <span itemprop="name">心情文字</span>
+                <a href="/categories/服务器/" itemprop="url" rel="index">
+                  <span itemprop="name">服务器</span>
                 </a>
               </span>
 
@@ -209,8 +213,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/07/31/送给自己/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/31/送给自己/" itemprop="commentsCount"></span>
+              <a href="/2015/08/04/服务器端缓存环境配置-三/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/04/服务器端缓存环境配置-三/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -224,28 +228,58 @@
       
 
       
-        <span itemprop="articleBody"><p><strong>总有一天，你将破茧而出</strong><br><strong>成长的比人们期待的还要美丽</strong></p>
-<p><strong>但这个过程会很痛</strong><br><strong>会很辛苦</strong></p>
-<p><strong>面对着汹涌而来的现实</strong><br><strong>觉得自己渺小无力</strong></p>
-<p><strong>但这 也是生命的一部分</strong><br><strong>做好现在你能做的 然后 一切都会好的</strong><br><strong>我们都将孤独地长大 不要害怕</strong></p>
+        <span itemprop="articleBody"><h1 id="nginx的Lua扩展"><strong>nginx的Lua扩展</strong></h1><p>接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。<br>Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。<br>想要在nginx里边增加lua扩展，需要的模块如下：</p>
+<ul>
+<li><a href="http://luajit.org" target="_blank" rel="external">luajit</a></li>
+<li><a href="https://github.com/simpl/ngx_devel_kit" target="_blank" rel="external">ngx_devel_kit</a></li>
+<li><a href="https://github.com/chaoslawful/lua-nginx-module" target="_blank" rel="external">lua_nginx_module</a></li>
+</ul>
+<a id="more"></a>
+<h2 id="安装luajit">安装luajit</h2><p>惯例，先要下载安装：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget http:<span class="comment">//luajit.org/download/LuaJIT-2.0.0-beta9.tar.gz </span></span><br><span class="line">tar -zxvf LuaJIT-<span class="number">2.0</span><span class="number">.0</span>-beta9.tar.gz</span><br><span class="line">cd LuaJIT-<span class="number">2.0</span><span class="number">.0</span>-beta9/</span><br><span class="line">make</span><br><span class="line">make install PREFIX=/usr/local/luajit</span><br><span class="line">ln -sf luajit-<span class="number">2.0</span><span class="number">.0</span>-beta9 /usr/local/luajit/bin/luajit</span><br></pre></td></tr></table></figure></p>
+<p>接下来，配置luajit的环境变量，这个在nginx重新编译的时候需要。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> LUAJIT_LIB=/usr/<span class="built_in">local</span>/luajit/lib  </span><br><span class="line"><span class="built_in">export</span> LUAJIT_INC=/usr/<span class="built_in">local</span>/luajit/include/luajit-<span class="number">2.0</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="安装ngx_devel_kit">安装ngx_devel_kit</h2><p><a href="https://github.com/simpl/ngx_devel_kit.git" target="_blank" rel="external">点击获取ngx_devel_kit</a>，将其放在/usr/local目录下，或者使用git来快捷获取。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/simpl/ngx_devel_kit.git</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装lua-nginx-module">安装lua-nginx-module</h2><p><a href="https://github.com/chaoslawful/lua-nginx-module.git" target="_blank" rel="external">点击获取lua-nginx-kit</a>，跟ngx_devel_kit一样，将其解压放于/usr/local目录下。或者使用git快捷获取。<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> /usr/local/</span><br><span class="line">git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/chaoslawful/<span class="keyword">lua</span>-nginx-module.git</span><br></pre></td></tr></table></figure></p>
+<p>使用git来获取github上的资源，是不是十分方便？</p>
+<h2 id="重新编译nginx">重新编译nginx</h2><p>进入nginx源码放置的文件夹，重新配置configure，再次make，增加nginx的扩展。<br><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/<span class="keyword">local</span>/nginx-<span class="number">1.8</span><span class="number">.0</span>/</span><br><span class="line">./configure --prefix=/usr/<span class="keyword">local</span>/nginx --with-ld-opt=<span class="string">"-Wl,-rpath,<span class="variable">$LUAJIT_LIB</span>"</span> --add-<span class="keyword">module</span>=/usr/<span class="keyword">local</span>/ngx_devel_kit --add-<span class="keyword">module</span>=/usr/<span class="keyword">local</span>/lua-nginx-<span class="keyword">module</span></span><br><span class="line">make -j2 </span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<p>至此，nginx的lua 扩展模块已经安装完毕，下面进行一下测试。</p>
+<h2 id="测试lua模块">测试lua模块</h2><p>在nginx的配置文件中增加一段代码就OK了。<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit /usr/<span class="keyword">local</span>/nginx/<span class="keyword">conf</span>/nginx.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure></p>
+<p>在监听80端口的server中增加一下内容：<br><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location /lua &#123;</span><br><span class="line">	    default_type 'text/plain';</span><br><span class="line">	    content_by_lua 'ngx.<span class="keyword">say</span>(<span class="string">"I am lua in nginx"</span>)';</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>启动nginx<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin<span class="regexp">/nginx</span></span><br></pre></td></tr></table></figure></p>
+<p>现在在浏览器中输入<a href="http://127.0.0.1/lua" target="_blank" rel="external">127.0.0.1/lua</a>，就可以看到“I am lua in nginx”。这样就说明，nginx的lua模块也安装成功了。</p>
+<h1 id="nginx的mongodb_gridfs扩展"><strong>nginx的mongodb gridfs扩展</strong></h1><p>先从github上将nginx-gridfs模块下载下来。<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> /usr/<span class="keyword">local</span></span><br><span class="line">git clone https:<span class="comment">//github.com/mdirolf/nginx-gridfs.git</span></span><br><span class="line"><span class="keyword">cd</span> nginx-gridfs/</span><br><span class="line">git submodule init</span><br><span class="line">git submodule <span class="keyword">update</span></span><br></pre></td></tr></table></figure></p>
+<p>重新编译nginx，这里要注意，由于上边已经增加了nginx的lua扩展，现在需要增加模块，方法如下：<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin<span class="regexp">/nginx -V</span></span><br></pre></td></tr></table></figure></p>
+<p>获取当前nginx已有的模块：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nginx version: nginx/<span class="number">1.8</span><span class="number">.0</span></span><br><span class="line">built by gcc <span class="number">4.8</span><span class="number">.3</span> <span class="number">20140911</span> (Red Hat <span class="number">4.8</span><span class="number">.3</span>-<span class="number">9</span>) (GCC) </span><br><span class="line">configure <span class="built_in">arguments</span>: --prefix=<span class="regexp">/usr/</span>local/nginx --<span class="keyword">with</span>-ld-opt=-Wl,-rpath,<span class="regexp">/usr/</span>local/luajit/lib --add-<span class="built_in">module</span>=<span class="regexp">/usr/</span>local/ngx_devel_kit --add-<span class="built_in">module</span>=<span class="regexp">/usr/</span>local/lua-nginx-<span class="built_in">module</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到，configure arguments后边的参数，将他们拷贝，供等下使用。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/nginx-<span class="number">1.8</span><span class="number">.0</span>/</span><br><span class="line">./configure --prefix=<span class="regexp">/usr/</span>local/nginx --<span class="keyword">with</span>-ld-opt=-Wl,-rpath,<span class="regexp">/usr/</span>local/luajit/lib --add-<span class="built_in">module</span>=<span class="regexp">/usr/</span>local/ngx_devel_kit --add-<span class="built_in">module</span>=<span class="regexp">/usr/</span>local/lua-nginx-<span class="built_in">module</span> --<span class="keyword">with</span>-openssl=<span class="regexp">/usr/i</span>nclude/openssl --<span class="keyword">with</span>-http_stub_status_module --add-<span class="built_in">module</span>=<span class="regexp">/usr/</span>local/nginx-gridfs</span><br><span class="line">make </span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<p>这样，nginx-gridfs模块就也安装完成了，现在就可以使用nginx来直接操作mongodb中的gridfs了。</p>
+<h1 id="结束"><strong>结束</strong></h1><p>到这里，整个流程的环境安装和配置就算完成了。后边的博客会继续记录我在学习这些内容的过程。<br>最后，再来张美图吧<br><img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgIMG_1877.JPG" alt=""><br>~~ 武汉最近的天气，确实很好！</p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag">#Lua</a>
+          
+            <a href="/tags/Mongodb/" rel="tag">#Mongodb</a>
+          
+            <a href="/tags/Nginx/" rel="tag">#Nginx</a>
+          
+            <a href="/tags/Redis/" rel="tag">#Redis</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/07/31/服务器端缓存环境配置/" rel="prev">服务器端缓存环境配置</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/07/31/海量小文件服务器端架构/" rel="next">海量小文件服务器端缓存架构</a>
+              <a href="/2015/08/02/服务器端缓存环境配置-二/" rel="next">服务器端缓存环境配置(二)</a>
             
           </div>
         </div>
@@ -270,8 +304,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/07/31/送给自己/"
-                   data-title="送给自己" data-url="http://eclipsesv.com/2015/07/31/送给自己/">
+              <div class="ds-thread" data-thread-key="2015/08/04/服务器端缓存环境配置-三/"
+                   data-title="服务器端缓存环境配置(三)" data-url="http://eclipsesv.com/2015/08/04/服务器端缓存环境配置-三/">
               </div>
             
           </div>
@@ -370,7 +404,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx的Lua扩展"><span class="nav-number">1.</span> <span class="nav-text">nginx的Lua扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装luajit"><span class="nav-number">1.1.</span> <span class="nav-text">安装luajit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装ngx_devel_kit"><span class="nav-number">1.2.</span> <span class="nav-text">安装ngx_devel_kit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装lua-nginx-module"><span class="nav-number">1.3.</span> <span class="nav-text">安装lua-nginx-module</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新编译nginx"><span class="nav-number">1.4.</span> <span class="nav-text">重新编译nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试lua模块"><span class="nav-number">1.5.</span> <span class="nav-text">测试lua模块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx的mongodb_gridfs扩展"><span class="nav-number">2.</span> <span class="nav-text">nginx的mongodb gridfs扩展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结束"><span class="nav-number">3.</span> <span class="nav-text">结束</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
