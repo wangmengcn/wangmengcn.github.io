@@ -5,7 +5,7 @@
   <subtitle><![CDATA[搬砖路上有你有我]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://eclipsesv.com//"/>
-  <updated>2015-08-05T03:38:22.860Z</updated>
+  <updated>2015-08-07T07:10:43.338Z</updated>
   <id>http://eclipsesv.com//</id>
   
   <author>
@@ -14,6 +14,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Linux下程序开机自启动]]></title>
+    <link href="http://eclipsesv.com/2015/08/07/Linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8/"/>
+    <id>http://eclipsesv.com/2015/08/07/Linux下程序开机自启动/</id>
+    <published>2015-08-07T06:50:19.000Z</published>
+    <updated>2015-08-07T07:10:43.338Z</updated>
+    <content type="html"><![CDATA[<p>在日常工作中，随着服务器上部署的服务的增多，每次服务器重启之后，都需要逐一将服务启动，这个过程耗时而且麻烦。于是，将一些服务在服务器启动之后自动启动变得很方便。<br><a id="more"></a><br>在Linux下设置开机自启动程序，通常的做法是修改/etc/rc.d/rc.local文件，过程十分简单，只需要在这个文件追加你需要的命令就可以了。<br>比如说，我现在需要开机自启动Mongodb,php-fpm,nginx，简要做法如下：<br>将mongodb启动的命令<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>local<span class="regexp">/Mongodb3.0/</span>bin<span class="regexp">/mongod --dbpath=/u</span>sr<span class="regexp">/local/M</span>ongodb3.<span class="number">0</span><span class="regexp">/db --logpath=/u</span>sr<span class="regexp">/local/M</span>ongodb3.<span class="number">0</span><span class="regexp">/log/m</span>ongodb.log --fork --pidfilepath=<span class="regexp">/usr/</span>local<span class="regexp">/Mongodb3.0/</span>log<span class="regexp">/mongo.pid</span></span><br></pre></td></tr></table></figure></p>
+<p>php-fpm启动的命令<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>local<span class="regexp">/php/</span>sbin<span class="regexp">/php-fpm -c /u</span>sr<span class="regexp">/local/</span>php<span class="regexp">/etc/</span>php.ini -y <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>etc<span class="regexp">/php-fpm.conf</span></span><br></pre></td></tr></table></figure></p>
+<p>以及nginx启动的命令<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin<span class="regexp">/nginx</span></span><br></pre></td></tr></table></figure></p>
+<p>放在/etc/rc.d/rc.local文件末尾。<br>还有一步十分重要，就是修改rc.local文件的操作权限，chmod a+w /etc/rc.d/rc.loacl，赋予所有用户操作rc.local文件的权限。这样在重启系统之后，这些程序都会如愿自动启动。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在日常工作中，随着服务器上部署的服务的增多，每次服务器重启之后，都需要逐一将服务启动，这个过程耗时而且麻烦。于是，将一些服务在服务器启动之后自动启动变得很方便。<br>]]>
+    
+    </summary>
+    
+      <category term="Linux命令" scheme="http://eclipsesv.com/tags/Linux%E5%91%BD%E4%BB%A4/"/>
+    
+      <category term="Linux" scheme="http://eclipsesv.com/categories/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[服务器端缓存环境配置(三)]]></title>
