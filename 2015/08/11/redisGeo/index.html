@@ -24,7 +24,7 @@
 
 
 
-  <meta name="keywords" content="Nginx,Mongodb,Redis" />
+  <meta name="keywords" content="redis," />
 
 
 
@@ -35,25 +35,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="总有一天，你将破茧而出成长的比人们期待的还要美丽
-但这个过程会很痛会很辛苦
-面对着汹涌而来的现实觉得自己渺小无力
-但这 也是生命的一部分做好现在你能做的 然后 一切都会好的我们都将孤独地长大 不要害怕">
+<meta name="description" content="在redis3.2版本中，增加了geohash的扩展，这下可以使用Redis来作更多有意思的事情了。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="送给自己">
-<meta property="og:url" content="http://eclipsesv.com/2015/07/31/送给自己/index.html">
+<meta property="og:title" content="redis的GEO扩展">
+<meta property="og:url" content="http://eclipsesv.com/2015/08/11/redisGeo/index.html">
 <meta property="og:site_name" content="搬砖工的日常">
-<meta property="og:description" content="总有一天，你将破茧而出成长的比人们期待的还要美丽
-但这个过程会很痛会很辛苦
-面对着汹涌而来的现实觉得自己渺小无力
-但这 也是生命的一部分做好现在你能做的 然后 一切都会好的我们都将孤独地长大 不要害怕">
-<meta property="og:updated_time" content="2015-07-31T07:18:48.490Z">
+<meta property="og:description" content="在redis3.2版本中，增加了geohash的扩展，这下可以使用Redis来作更多有意思的事情了。">
+<meta property="og:updated_time" content="2015-08-11T14:38:11.063Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="送给自己">
-<meta name="twitter:description" content="总有一天，你将破茧而出成长的比人们期待的还要美丽
-但这个过程会很痛会很辛苦
-面对着汹涌而来的现实觉得自己渺小无力
-但这 也是生命的一部分做好现在你能做的 然后 一切都会好的我们都将孤独地长大 不要害怕">
+<meta name="twitter:title" content="redis的GEO扩展">
+<meta name="twitter:description" content="在redis3.2版本中，增加了geohash的扩展，这下可以使用Redis来作更多有意思的事情了。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -63,7 +54,7 @@
   };
 </script>
 
-  <title> 送给自己 | 搬砖工的日常 </title>
+  <title> redis的GEO扩展 | 搬砖工的日常 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -172,7 +163,7 @@
           
           
             
-              送给自己
+              redis的GEO扩展
             
           
         </h1>
@@ -181,8 +172,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-07-31T15:17:09+08:00" content="2015-07-31">
-            2015-07-31
+          <time itemprop="dateCreated" datetime="2015-08-11T14:50:19+08:00" content="2015-08-11">
+            2015-08-11
           </time>
         </span>
 
@@ -191,8 +182,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/心情文字/" itemprop="url" rel="index">
-                  <span itemprop="name">心情文字</span>
+                <a href="/categories/数据库/" itemprop="url" rel="index">
+                  <span itemprop="name">数据库</span>
                 </a>
               </span>
 
@@ -207,8 +198,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/07/31/送给自己/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/31/送给自己/" itemprop="commentsCount"></span>
+              <a href="/2015/08/11/redisGeo/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/11/redisGeo/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -222,28 +213,68 @@
       
 
       
-        <span itemprop="articleBody"><p><strong>总有一天，你将破茧而出</strong><br><strong>成长的比人们期待的还要美丽</strong></p>
-<p><strong>但这个过程会很痛</strong><br><strong>会很辛苦</strong></p>
-<p><strong>面对着汹涌而来的现实</strong><br><strong>觉得自己渺小无力</strong></p>
-<p><strong>但这 也是生命的一部分</strong><br><strong>做好现在你能做的 然后 一切都会好的</strong><br><strong>我们都将孤独地长大 不要害怕</strong></p>
+        <span itemprop="articleBody"><p>在redis3.2版本中，增加了geohash的扩展，这下可以使用Redis来作更多有意思的事情了。<br><a id="more"></a></p>
+<h1 id="GEO相关命令">GEO相关命令</h1><p>主要相关的命令有一下这些</p>
+<ul>
+<li>GEOADD</li>
+<li>GEODIST</li>
+<li>GEOHASH</li>
+<li>GEOPOS</li>
+<li>GEORADIUS</li>
+<li>GEORADIUSBYMEMBER</li>
+</ul>
+<p>下面开始一一说明这些命令的作用：</p>
+<h2 id="GEOADD">GEOADD</h2><p>从这个命令的名字来开，大概就可以猜测到它的作用，即向REDIS中增加一条和地理位置相关的数据。<br>使用语法：<br><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">GEOADD</span> <span class="atom">dataset</span> <span class="atom">latitude</span> <span class="atom">longtitude</span> <span class="atom">place</span> [<span class="atom">latitude</span> <span class="atom">longtitude</span> <span class="atom">place</span>]...</span><br></pre></td></tr></table></figure></p>
+<p>其中,dataset表示一个数据集，在这个数据集中可以存储多个地名(place)，latitude和longtitude各表示纬度和经度，一次GEOADD可以添加多个place。<br>示例：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEOADD Sicily <span class="number">13.361389</span> <span class="number">38.115556</span> <span class="string">"Palermo"</span> <span class="number">15.087269</span> <span class="number">37.502669</span> <span class="string">"Catania"</span></span><br></pre></td></tr></table></figure></p>
+<p>上边的操作，就完成了向Sicily数据集中增加Palermo和Catania这两条信息，在增加完成时，redis-cli返回完成添加的数据条目数。</p>
+<h2 id="GEODIST">GEODIST</h2><p>这条命令会返回在一个GEO数据集中两个地点之间的距离，如果其中一个或者两个地点都不再GEO数据集中，返回NULL。<br>返回的距离默认单位是米，不过还可以使用其他的单位主要包括：</p>
+<ul>
+<li>km（千米）</li>
+<li>mi (英里)</li>
+<li>ft (英尺)</li>
+</ul>
+<p>使用方法如下：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">GEODIST</span> Sicily Palermo Catania</span><br><span class="line">GEODIST Sicily Palermo Catania km</span><br><span class="line">GEODIST Sicily Palermo Catania mi</span><br></pre></td></tr></table></figure></p>
+<p>这样，根据最后的单位，返回不同的数值。</p>
+<h2 id="GEOHASH">GEOHASH</h2><p>用这条命令可以返回一个或多个已经存入redis地点的11位Geohash码，使用方法如下：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">GEOHASH</span> Sicily Palermo Catania</span><br></pre></td></tr></table></figure></p>
+<p>返回结果是这样的<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="string">"sqc8b49rny0"</span></span><br><span class="line"><span class="number">2</span>) <span class="string">"sqdtr74hyu0"</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="GEOPOS">GEOPOS</h2><p>这个命令，可以返回在GEOSET里边指定地点的经纬度，用法如下：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">GEOPOS</span> Sicily Palermo Catania</span><br></pre></td></tr></table></figure></p>
+<p>返回结果如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="number">1</span>) <span class="string">"13.361389338970184"</span></span><br><span class="line">   <span class="number">2</span>) <span class="string">"38.115556395496299"</span></span><br><span class="line"><span class="number">2</span>) <span class="number">1</span>) <span class="string">"15.087267458438873"</span></span><br><span class="line">   <span class="number">2</span>) <span class="string">"37.50266842333162"</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="GEORADIUS">GEORADIUS</h2><p>顾名思义，这个命令返回的是指定地点半径范围内的所有匹配地点，类似与缓冲区分析，这个缓冲区的范围单位跟GEODIST命令中所用的一样有m(米),km(千米),mi(英里),ft(英尺)。<br>另外这个命令还有另外的选项：</p>
+<ul>
+<li>WITHDIST 返回结果除了匹配点以外，还返回匹配点距离中心点的距离；</li>
+<li>WITHCOORD 返回结果除匹配点外，还包含匹配点的经纬度；</li>
+<li>WITHASH 返回结果初匹配点外，还包含匹配点的geohash码。</li>
+</ul>
+<p>默认的返回结果是一个无序的集合，使用命令ASC或DESC可以使匹配点按照距离中心点的远近排序返回。<br>同时，默认情况下，匹配点会全数返回，增加COUNT命令，可以返回指定数量的匹配结果。<br>命令用法如下：</p>
+<h3 id="WITHDIST">WITHDIST</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEORADIUS Sicily <span class="number">15</span> <span class="number">37</span> <span class="number">200</span> km WITHDIST</span><br></pre></td></tr></table></figure>
+<p>对应返回<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="number">1</span>) <span class="string">"Palermo"</span></span><br><span class="line">   <span class="number">2</span>) <span class="string">"190.4424"</span></span><br><span class="line"><span class="number">2</span>) <span class="number">1</span>) <span class="string">"Catania"</span></span><br><span class="line">   <span class="number">2</span>) <span class="string">"56.4413"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="WITHCOORD">WITHCOORD</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEORADIUS Sicily <span class="number">15</span> <span class="number">37</span> <span class="number">200</span> km WITHCOORD</span><br></pre></td></tr></table></figure>
+<p>对应返回<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="number">1</span>) <span class="string">"Palermo"</span></span><br><span class="line">   <span class="number">2</span>) <span class="number">1</span>) <span class="string">"13.361389338970184"</span></span><br><span class="line">      <span class="number">2</span>) <span class="string">"38.115556395496299"</span></span><br><span class="line"><span class="number">2</span>) <span class="number">1</span>) <span class="string">"Catania"</span></span><br><span class="line">   <span class="number">2</span>) <span class="number">1</span>) <span class="string">"15.087267458438873"</span></span><br><span class="line">      <span class="number">2</span>) <span class="string">"37.50266842333162"</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="GEORADIUSBYMEMBER">GEORADIUSBYMEMBER</h2><p>这个命令和GEORADIUS使用方法类似，不过这个指定中心点不是经纬度，而是一个地点。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEORADIUSBYMEMBER Sicily Palermo  <span class="number">200</span> km</span><br></pre></td></tr></table></figure></p>
+<p>返回如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="string">"Palermo"</span></span><br><span class="line"><span class="number">2</span>) <span class="string">"Catania"</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="总结">总结</h1><p>增加了GEO特性的redis，我们可以充分发挥想象力，好好利用一下它，在接下来的几篇博客，我会深入研究一下GEOHASH的特性，另外，Mongodb的GEO特性也非常之的研究。</p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag">#redis</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/07/31/服务器端缓存环境配置/" rel="prev">服务器端缓存环境配置</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/07/31/海量小文件服务器端架构/" rel="next">海量小文件服务器端缓存架构</a>
+              <a href="/2015/08/07/Linux下程序开机自启动/" rel="next">Linux下程序开机自启动</a>
             
           </div>
         </div>
@@ -268,8 +299,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/07/31/送给自己/"
-                   data-title="送给自己" data-url="http://eclipsesv.com/2015/07/31/送给自己/">
+              <div class="ds-thread" data-thread-key="2015/08/11/redisGeo/"
+                   data-title="redis的GEO扩展" data-url="http://eclipsesv.com/2015/08/11/redisGeo/">
               </div>
             
           </div>
@@ -368,7 +399,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GEO相关命令"><span class="nav-number">1.</span> <span class="nav-text">GEO相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GEOADD"><span class="nav-number">1.1.</span> <span class="nav-text">GEOADD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GEODIST"><span class="nav-number">1.2.</span> <span class="nav-text">GEODIST</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GEOHASH"><span class="nav-number">1.3.</span> <span class="nav-text">GEOHASH</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GEOPOS"><span class="nav-number">1.4.</span> <span class="nav-text">GEOPOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GEORADIUS"><span class="nav-number">1.5.</span> <span class="nav-text">GEORADIUS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WITHDIST"><span class="nav-number">1.5.1.</span> <span class="nav-text">WITHDIST</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WITHCOORD"><span class="nav-number">1.5.2.</span> <span class="nav-text">WITHCOORD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GEORADIUSBYMEMBER"><span class="nav-number">1.6.</span> <span class="nav-text">GEORADIUSBYMEMBER</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
