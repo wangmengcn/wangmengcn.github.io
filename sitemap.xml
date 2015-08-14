@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://eclipsesv.com/2015/08/14/php%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E8%84%9A%E6%9C%AC/</loc>
+    <lastmod>2015-08-14T07:36:18.101Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://eclipsesv.com/2015/08/11/redisGeo/</loc>
     <lastmod>2015-08-11T14:38:11.063Z</lastmod>
   </url>
