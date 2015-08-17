@@ -1,0 +1,645 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+
+
+  <meta name="keywords" content="Mongodb,Nginx," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="搬砖工的日常" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="Mongodb作为一款非常流行的NOSQL数据库，应用范围非常广泛，它和Nginx-gridfs组合可以构建性能非常出色的应用。下边简单介绍一下如何搭建这套应用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mongodb副本集在nginx-gridfs中的使用">
+<meta property="og:url" content="http://eclipsesv.com/2015/08/17/Mongodb副本集在nginx-gridfs中的使用/index.html">
+<meta property="og:site_name" content="搬砖工的日常">
+<meta property="og:description" content="Mongodb作为一款非常流行的NOSQL数据库，应用范围非常广泛，它和Nginx-gridfs组合可以构建性能非常出色的应用。下边简单介绍一下如何搭建这套应用。">
+<meta property="og:image" content="http://docs.mongodb.org/manual/_images/replica-set-read-write-operations-primary.png">
+<meta property="og:updated_time" content="2015-08-17T15:27:33.896Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mongodb副本集在nginx-gridfs中的使用">
+<meta name="twitter:description" content="Mongodb作为一款非常流行的NOSQL数据库，应用范围非常广泛，它和Nginx-gridfs组合可以构建性能非常出色的应用。下边简单介绍一下如何搭建这套应用。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> Mongodb副本集在nginx-gridfs中的使用 | 搬砖工的日常 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?fab1a5096357e713933860e5c21dcfdf";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">搬砖工的日常</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Mongodb副本集在nginx-gridfs中的使用
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-08-17T22:41:24+08:00" content="2015-08-17">
+            2015-08-17
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Mongodb/" itemprop="url" rel="index">
+                  <span itemprop="name">Mongodb</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/17/Mongodb副本集在nginx-gridfs中的使用/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/17/Mongodb副本集在nginx-gridfs中的使用/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p><a href="https://www.mongodb.org/" target="_blank" rel="external">Mongodb</a>作为一款非常流行的NOSQL数据库，应用范围非常广泛，它和<a href="https://github.com/mdirolf/nginx-gridfs" target="_blank" rel="external">Nginx-gridfs</a>组合可以构建性能非常出色的应用。下边简单介绍一下如何搭建这套应用。<br><a id="more"></a></p>
+<h1 id="Mongodb副本集的搭建">Mongodb副本集的搭建</h1><p>在生产环境中，使用单实例的Mongodb显然不能承担重任。<a href="http://docs.mongodb.org/manual/core/replication-introduction/" target="_blank" rel="external">Mongodb的副本集</a>是一个mongod进程实例簇，数据在这个簇中相互复制，并且可以自动进行故障切换。这个过程虽然增加了数据冗余，但是确保了高可用性，简化了管理任务。同时，副本集也使分布式存储成为了可能。下面就可是搭建一个简单的副本集：</p>
+<h2 id="下载解压Mongodb">下载解压Mongodb</h2><p>最新的稳定版本是<a href="https://fastdl.mongodb.org/src/mongodb-src-r3.0.5.tar.gz?_ga=1.74584210.1075743892.1439139049" target="_blank" rel="external">3.0.5</a>,将下载下来的安装包解压到指定位置，将解压后的bin文件夹的文件分别复制到/usr/local/Mongorepset/1/、/usr/local/Mongorepset/2/、/usr/local/Mongorepset/3/中，并在这三个文件夹中分别建立data文件夹。</p>
+<h2 id="启动mongod初始化副本集">启动mongod初始化副本集</h2><p>分别在上述三个文件夹中启动mongod，端口号和日志文件分别对应各自的文件夹：<br><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">cd</span> <span class="comment">/usr/local/Mongorepset/3</span></span><br><span class="line"><span class="string">.</span><span class="comment">/mongod</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">dbpath=</span><span class="string">.</span><span class="comment">/data</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">port=33333</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">replSet</span> <span class="comment">repset</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">logpath=</span><span class="string">.</span><span class="comment">/data/1</span><span class="string">.</span><span class="comment">log</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">fork</span></span><br></pre></td></tr></table></figure></p>
+<p>启动mongod之后，启动任意一个mongo，初始化副本集：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="regexp">/usr/</span>local<span class="regexp">/Mongorepset/</span><span class="number">3</span></span><br><span class="line">./mongo --port=<span class="number">33333</span></span><br><span class="line"></span><br><span class="line">&gt; use admin</span><br><span class="line">switched to db admin</span><br><span class="line">&gt; config=&#123; <span class="string">_id:</span><span class="string">"repset"</span>,<span class="string">members:</span>[</span><br><span class="line">... &#123;<span class="string">_id:</span><span class="number">0</span>,<span class="string">host:</span><span class="string">"127.0.0.1:11111"</span>&#125;,</span><br><span class="line">... &#123;<span class="string">_id:</span><span class="number">1</span>,<span class="string">host:</span><span class="string">"127.0.0.1:22222"</span>&#125;,</span><br><span class="line">... &#123;<span class="string">_id:</span><span class="number">2</span>,<span class="string">host:</span><span class="string">"127.0.0.1:33333"</span>&#125;]</span><br><span class="line">... &#125;</span><br><span class="line">&gt; rs.initiate(config);</span><br></pre></td></tr></table></figure></p>
+<p>这样，Mongodb副本集就算搭建完成，我们可以看一下现在副本集的状态：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">repset:SECONDARY&gt; rs.status();</span><br><span class="line">&#123;</span><br><span class="line">	<span class="string">"set"</span> : <span class="string">"repset"</span>,</span><br><span class="line">	<span class="string">"date"</span> : ISODate(<span class="string">"2015-08-17T12:59:59.910Z"</span>),</span><br><span class="line">	<span class="string">"myState"</span> : <span class="number">2</span>,</span><br><span class="line">	<span class="string">"members"</span> : [</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="string">"_id"</span> : <span class="number">0</span>,</span><br><span class="line">			<span class="string">"name"</span> : <span class="string">"127.0.0.1:11111"</span>,</span><br><span class="line">			<span class="string">"health"</span> : <span class="number">1</span>,</span><br><span class="line">			<span class="string">"state"</span> : <span class="number">2</span>,</span><br><span class="line">			<span class="string">"stateStr"</span> : <span class="string">"SECONDARY"</span>,</span><br><span class="line">			<span class="string">"uptime"</span> : <span class="number">693</span>,</span><br><span class="line">			<span class="string">"optime"</span> : Timestamp(<span class="number">1439816203</span>, <span class="number">1</span>),</span><br><span class="line">			<span class="string">"optimeDate"</span> : ISODate(<span class="string">"2015-08-17T12:56:43Z"</span>),</span><br><span class="line">			<span class="string">"configVersion"</span> : <span class="number">1</span>,</span><br><span class="line">			<span class="string">"self"</span> : <span class="literal">true</span></span><br><span class="line">		&#125;,</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="string">"_id"</span> : <span class="number">1</span>,</span><br><span class="line">			<span class="string">"name"</span> : <span class="string">"127.0.0.1:22222"</span>,</span><br><span class="line">			<span class="string">"health"</span> : <span class="number">1</span>,</span><br><span class="line">			<span class="string">"state"</span> : <span class="number">2</span>,</span><br><span class="line">			<span class="string">"stateStr"</span> : <span class="string">"SECONDARY"</span>,</span><br><span class="line">			<span class="string">"uptime"</span> : <span class="number">196</span>,</span><br><span class="line">			<span class="string">"optime"</span> : Timestamp(<span class="number">1439816203</span>, <span class="number">1</span>),</span><br><span class="line">			<span class="string">"optimeDate"</span> : ISODate(<span class="string">"2015-08-17T12:56:43Z"</span>),</span><br><span class="line">			<span class="string">"lastHeartbeat"</span> : ISODate(<span class="string">"2015-08-17T12:59:59.561Z"</span>),</span><br><span class="line">			<span class="string">"lastHeartbeatRecv"</span> : ISODate(<span class="string">"2015-08-17T12:59:59.561Z"</span>),</span><br><span class="line">			<span class="string">"pingMs"</span> : <span class="number">0</span>,</span><br><span class="line">			<span class="string">"configVersion"</span> : <span class="number">1</span></span><br><span class="line">		&#125;,</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="string">"_id"</span> : <span class="number">2</span>,</span><br><span class="line">			<span class="string">"name"</span> : <span class="string">"127.0.0.1:33333"</span>,</span><br><span class="line">			<span class="string">"health"</span> : <span class="number">1</span>,</span><br><span class="line">			<span class="string">"state"</span> : <span class="number">1</span>,</span><br><span class="line">			<span class="string">"stateStr"</span> : <span class="string">"PRIMARY"</span>,</span><br><span class="line">			<span class="string">"uptime"</span> : <span class="number">196</span>,</span><br><span class="line">			<span class="string">"optime"</span> : Timestamp(<span class="number">1439816203</span>, <span class="number">1</span>),</span><br><span class="line">			<span class="string">"optimeDate"</span> : ISODate(<span class="string">"2015-08-17T12:56:43Z"</span>),</span><br><span class="line">			<span class="string">"lastHeartbeat"</span> : ISODate(<span class="string">"2015-08-17T12:59:59.562Z"</span>),</span><br><span class="line">			<span class="string">"lastHeartbeatRecv"</span> : ISODate(<span class="string">"2015-08-17T12:59:59.362Z"</span>),</span><br><span class="line">			<span class="string">"pingMs"</span> : <span class="number">0</span>,</span><br><span class="line">			<span class="string">"electionTime"</span> : Timestamp(<span class="number">1439816205</span>, <span class="number">1</span>),</span><br><span class="line">			<span class="string">"electionDate"</span> : ISODate(<span class="string">"2015-08-17T12:56:45Z"</span>),</span><br><span class="line">			<span class="string">"configVersion"</span> : <span class="number">1</span></span><br><span class="line">		&#125;</span><br><span class="line">	],</span><br><span class="line">	<span class="string">"ok"</span> : <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>有一个PRIMARY和两个SECONDARY节点，他们的工作方式如下：<br><img src="http://docs.mongodb.org/manual/_images/replica-set-read-write-operations-primary.png" alt="">，在应用中，PRIMARY节点负责写入和读取数据，SECONDARY节点负责备份PRIMARY中数据，它们之间通过心跳包来检测彼此的运行状态，如果主节点挂掉，它们在很短的时间内就可以重新推选出一个新的PRIMARY，保证数据库的高可用性。</p>
+<h1 id="Nginx-gridfs中副本集的使用">Nginx-gridfs中副本集的使用</h1><p>Nginx-gridfs为Nginx提供了直接访问Mongodb的能力，配置Mongodb的副本集也十分简单，只需要在nginx配置文件中对应的location增加字段就可以了：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location /gridfs/ &#123;</span><br><span class="line">    gridfs my_app field=filename type=<span class="built_in">string</span>;</span><br><span class="line">    mongo <span class="string">"repset"</span></span><br><span class="line">          <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">11111</span></span><br><span class="line">          <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">22222</span></span><br><span class="line">          <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">33333</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中Location中的字段gridfs 对应的是数据库名；filed对应的是检索字段，nginx-gridfs提供了对_id和filename的支持；mongo对应的”foo”是副本集的名称；下边则是这个副本集的节点。<br>保存更新之后的nginx配置文件，重启nginx，就可以愉快地通过Nginx访问Mongodb副本集啦。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mongodb/" rel="tag">#Mongodb</a>
+          
+            <a href="/tags/Nginx/" rel="tag">#Nginx</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/14/php执行服务器端脚本/" rel="next">php执行服务器端脚本</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/08/17/Mongodb副本集在nginx-gridfs中的使用/"
+                   data-title="Mongodb副本集在nginx-gridfs中的使用" data-url="http://eclipsesv.com/2015/08/17/Mongodb副本集在nginx-gridfs中的使用/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgIMG_1806.JPG" alt="wm" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">wm</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description"></p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wangmengcn" target="_blank">github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/Eclipsesss/" target="_blank">douban</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Mongodb副本集的搭建"><span class="nav-number">1.</span> <span class="nav-text">Mongodb副本集的搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载解压Mongodb"><span class="nav-number">1.1.</span> <span class="nav-text">下载解压Mongodb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动mongod初始化副本集"><span class="nav-number">1.2.</span> <span class="nav-text">启动mongod初始化副本集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-gridfs中副本集的使用"><span class="nav-number">2.</span> <span class="nav-text">Nginx-gridfs中副本集的使用</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"eclipsesv"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
