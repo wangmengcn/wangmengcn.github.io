@@ -5,7 +5,7 @@
   <subtitle><![CDATA[搬砖路上有你有我]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://eclipsesv.com//"/>
-  <updated>2015-08-17T15:27:33.896Z</updated>
+  <updated>2015-08-27T15:32:00.045Z</updated>
   <id>http://eclipsesv.com//</id>
   
   <author>
@@ -14,6 +14,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[最近的一些想法]]></title>
+    <link href="http://eclipsesv.com/2015/08/27/%E6%9C%80%E8%BF%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/"/>
+    <id>http://eclipsesv.com/2015/08/27/最近的一些想法/</id>
+    <published>2015-08-27T15:07:35.000Z</published>
+    <updated>2015-08-27T15:32:00.045Z</updated>
+    <content type="html"><![CDATA[<p>已经有一段时间没有更新博客了，一来是糟心事太多，一直在做着十分不想做的事情，二来是由于最近也开始找工作了，花费了很多时间补一补以前欠下的知识。<br>但是也没有停下学习的脚步，把从图书馆借了两个多月的《龙枪传承》和另外一本小说原封不动的还了回去，又借了四本和服务器相关的书，在下学期想要多花点精力学习Node.js。MongoDB和Redis的GEO特性也十分值得深入学习。<br><a id="more"></a><br>近期的目标：</p>
+<ul>
+<li>赶快把现在做的项目相关的内容完成，做不愿意做的事情，真的是难受；</li>
+<li>结合GDAL和MongoDB组织管理矢量数据，数据组织好之后，初步打算利用Cesium制作一个小型的app；</li>
+<li>拥有非阻塞IO特性的Nginx和Node.js可以很好的结合起来，前者负责请求的转发和负载均衡，后者用来操作相关的数据库，这样重构一下以前的多级缓存架构，很期待到时候性能的提升（现在的Nginx+Lua在对数据库的操作过程中，IO阻塞对性能的影响还是比较大的）。</li>
+<li>补充完善自己的知识系统，包括计算机原理，计算机网络和一些常用的算法，哦对了，还有很久没有用过的SQL，貌似在找工作的时候笔试经常用到捏。</li>
+</ul>
+<p>别的不多说啦，压力很大，要好好努力才是！</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>已经有一段时间没有更新博客了，一来是糟心事太多，一直在做着十分不想做的事情，二来是由于最近也开始找工作了，花费了很多时间补一补以前欠下的知识。<br>但是也没有停下学习的脚步，把从图书馆借了两个多月的《龙枪传承》和另外一本小说原封不动的还了回去，又借了四本和服务器相关的书，在下学期想要多花点精力学习Node.js。MongoDB和Redis的GEO特性也十分值得深入学习。<br>]]>
+    
+    </summary>
+    
+      <category term="心情文字" scheme="http://eclipsesv.com/tags/%E5%BF%83%E6%83%85%E6%96%87%E5%AD%97/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Mongodb副本集在nginx-gridfs中的使用]]></title>

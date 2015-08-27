@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://eclipsesv.com/2015/08/27/%E6%9C%80%E8%BF%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/</loc>
+    <lastmod>2015-08-27T15:32:00.045Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://eclipsesv.com/2015/08/17/Mongodb%E5%89%AF%E6%9C%AC%E9%9B%86%E5%9C%A8nginx-gridfs%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
     <lastmod>2015-08-17T15:27:33.896Z</lastmod>
   </url>
