@@ -5,7 +5,7 @@
   <subtitle><![CDATA[搬砖路上有你有我]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://eclipsesv.com//"/>
-  <updated>2015-08-27T15:32:00.045Z</updated>
+  <updated>2015-09-09T04:45:47.376Z</updated>
   <id>http://eclipsesv.com//</id>
   
   <author>
@@ -14,6 +14,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[学习资料]]></title>
+    <link href="http://eclipsesv.com/2015/09/09/%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/"/>
+    <id>http://eclipsesv.com/2015/09/09/学习资料/</id>
+    <published>2015-09-09T04:12:09.000Z</published>
+    <updated>2015-09-09T04:45:47.376Z</updated>
+    <content type="html"><![CDATA[<p>前些天在图书馆借的几本书，最近看了，发现都还不错，一本是<a href="http://book.douban.com/subject/6889456/" target="_blank" rel="external">Linux shell脚本攻略</a>另外一本<a href="http://book.douban.com/subject/25856314/" target="_blank" rel="external">Web性能权威指南</a>。<br>第一本书，是印度一个在校大学生写的，里边的内容都比较具有实战型，可以在日常工作中提供不同的解决问题的思路。而第二本书则是非常系统性的提供了不同角度的优化web应用的方法，我自己比较感兴趣的是其中对与HTTP/2的讲解。<br>下一步打算更新nginx开始使用HTTP/2，考虑现在的缓存流程，改变服务器端和客户端的架构。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>前些天在图书馆借的几本书，最近看了，发现都还不错，一本是<a href="http://book.douban.com/subject/6889456/" target="_blank" rel="external">Linux shell脚本攻略</a>另外一本<a hr]]>
+    </summary>
+    
+      <category term="Linux" scheme="http://eclipsesv.com/tags/Linux/"/>
+    
+      <category term="Nginx" scheme="http://eclipsesv.com/tags/Nginx/"/>
+    
+      <category term="Web性能优化" scheme="http://eclipsesv.com/tags/Web%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+      <category term="学习" scheme="http://eclipsesv.com/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[最近的一些想法]]></title>
