@@ -1,0 +1,66 @@
+  /*点击元素则删除节点（事件代理）*/
+  function initDisAgent(){
+    var agentDisDiv = $("displayDiv");
+    agentDisDiv.onclick = function(ev){
+      var ev = ev||window.event;
+      var target = ev.target||ev.srcElement;
+      if (target.nodeName.toLowerCase() == "span"){
+        alert("删除"+target.innerText);
+        agentDisDiv.removeChild(target);
+      }
+    }
+  }
+  /*点击按钮操作（事件代理）*/
+  function initBtnAgent(){
+    var agent = $("inputDiv");
+    agent.onclick = function(ev){
+      var ev = ev||window.event;
+      var target = ev.target||ev.srcElement;
+      if(target.nodeName.toLowerCase() == "button"){
+        switch(target.id){
+          case "leftInBtn" :
+            creatSpan("leftInBtn");
+            break;
+          case "rightInBtn" :
+            creatSpan("rightInBtn");
+            break;
+          case "rightOutBtn" :
+            deleteSpan("rightOutBtn")
+            break;
+          case "leftOutBtn" :
+            deleteSpan("leftOutBtn")
+            break;
+        }   
+      }
+    }
+  }
+  function matchInSpan(){
+    var matchInput = $("matchValue").value;
+      if (matchInput.length !== 0){
+        var x;
+        var num = 0;
+        for (x in lengthGet){
+          lengthGet[x].className = "";
+          var testRag =  new RegExp(matchInput);
+          if (testRag.test(lengthGet[x].innerText)){
+            lengthGet[x].className = "match";
+            num++;
+          }   
+      }
+      if (num==0){
+        alert("没有找到匹配");
+      }
+    } else {
+      alert("输入不能为空");
+    };
+  }
+  function init (){
+    $("matchBtn").addEventListener("click",matchInSpan,false);
+  }
+  /*初始化*/
+  initBtnAgent();
+  initDisAgent();
+  init();
+</script>
+</body>
+</html>
