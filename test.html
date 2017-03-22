@@ -1,3 +1,116 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 06</title>
+  </head>
+<body>
+<div id="inputDiv">
+  <textarea id="writeInBtn" type="text" placeholder="请输入内容"></textarea>
+  <button id="leftInBtn">左侧入</button>
+  <button id="rightInBtn">右侧入</button>
+  &nbsp;
+  <button id="leftOutBtn">左侧出</button>
+  <button id="rightOutBtn">右侧出</button>
+</div>
+<div id="displayDiv">
+  <span>10</span>
+  <span>3</span>
+  <span>7</span>
+  <span>12</span>
+  <span>11</span>
+  <span>30</span>
+</div>
+<div>
+<input id="matchValue" placeholder="请输入匹配内容">
+<button id="matchBtn">开始匹配</button>
+</div>
+<style>
+  div{
+    margin: 10px 0;
+  }
+  span{
+    margin: 0 5px;
+    font-size: 20px;
+    color: white;
+    background: red;
+    float: left;
+  }
+  #displayDiv{
+    overflow: hidden;
+  }
+  #inputDiv button{
+    position: relative;
+    bottom: 6px;
+  }
+  .match{
+    border: 2px solid black;
+    color: black;
+    background: yellow;
+  }
+</style>
+<script type="text/javascript">
+  /*全局变量保存span-nodeList*/
+  var lengthGet = document.getElementsByTagName("span"); 
+  /*通过ID获取元素*/
+  function $(id){
+    return document.getElementById(id);
+  }
+  /*获取用户输入的内容*/
+  function getInputNum(){
+    var originInputNum = $("writeInBtn").value;
+    if (originInputNum==""){
+      alert("输入不能为空");
+    } else {
+      var reg = /^[\w\u4e00-\u9fa5\uf900-\ufa2d,， ；;、\n]*$/; 
+      //console.log(reg);    
+      if (reg.test(originInputNum)){
+        /*用正则分割数组，并去空*/
+        var newArr = originInputNum.split(/[,， ；;、\n]/)
+                                   .filter(function(value){
+                                      return value != "";                                                                                                                                          
+                                    });
+        return newArr;
+      } else {
+        alert("无法识别的字符");
+      };
+    };
+  }
+  /*首、尾添加元素*/
+  function creatSpan(targetId){ 
+    var inputNum = getInputNum();
+    if (typeof(inputNum)!=="undefined"){
+      for (var i=0;i<inputNum.length;i++){
+        var newSpan = document.createElement("span");         
+        newSpan.innerHTML = inputNum[i];
+        if (targetId == "leftInBtn"){
+          /*保证每次新增元素的顺序与用户输入的顺序一致*/
+          if (i==0){           
+            $("displayDiv").insertBefore(newSpan,lengthGet[0]);
+          } else {
+            $("displayDiv").insertBefore(newSpan,lengthGet[1]);
+          };
+        } else {
+          $("displayDiv").appendChild(newSpan);
+        };
+      } 
+    }
+  }
+  
+  /*首、尾删除元素*/
+  function deleteSpan(targetId){
+    if (lengthGet.length==0){
+      alert("已经没有数字可以删除了QUQ");
+    } else {
+      if (targetId == "leftOutBtn"){
+        alert("删除"+lengthGet[0].innerText);
+        $("displayDiv").removeChild(lengthGet[0]);
+      } else {
+        alert("删除"+lengthGet[lengthGet.length-1].innerText);
+        $("displayDiv").removeChild(lengthGet[lengthGet.length-1]);
+      };
+    };
+  }
   /*点击元素则删除节点（事件代理）*/
   function initDisAgent(){
     var agentDisDiv = $("displayDiv");
